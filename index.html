@@ -1,0 +1,3237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하모니 아카이브</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* ── 웹폰트 ── */
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Light.woff2') format('woff2');
+  font-weight: 300; font-display: swap;
+}
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Medium.woff2') format('woff2');
+  font-weight: 500; font-display: swap;
+}
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-SemiBold.woff2') format('woff2');
+  font-weight: 600; font-display: swap;
+}
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Bold.woff2') format('woff2');
+  font-weight: 700; font-display: swap;
+}
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-ExtraBold.woff2') format('woff2');
+  font-weight: 800; font-display: swap;
+}
+@font-face {
+  font-family: 'SUITE';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Heavy.woff2') format('woff2');
+  font-weight: 900; font-display: swap;
+}
+@font-face {
+  font-family: 'Ridibatang';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+  font-weight: normal; font-display: swap;
+}
+:root{
+  --bg:#EEF0F3;
+  --surface:#FFFFFF;
+  --border:#ECEEF1;
+  --border-strong:#E0E3E8;
+  --text:#1a1a1a;
+  --text-mute:#6B7280;
+  --text-soft:#9CA3AF;
+  --text-faint:#C5C9D0;
+  --r-xl:24px;
+  --r-lg:20px;
+  --r-md:14px;
+  --r-sm:10px;
+  /* 사이드바 활성 색 */
+  --nav-active-bg:#FFE5FA;
+  --nav-active-fg:#E82167;
+  /* 학년 색상 (요청사항) */
+  --y1:#F6C800;     --y1-bg:#FEF3C7;     --y1-border:#FCD34D;     /* 1학년 노랑 */
+  --y2:#2BC8BF;     --y2-bg:#D1FAE5;     --y2-border:#6EE7B7;     /* 2학년 민트 */
+  --y3:#4A81FF;     --y3-bg:#DBEAFE;     --y3-border:#93C5FD;     /* 3학년 밝은파랑 */
+  --adult:#995FFF;  --adult-bg:#EDE9FE;  --adult-border:#C4B5FD;  /* 성인 밝은보라 */
+  /* 캐릭터 색상 */
+  --sh:#7B5B3A;     --sh-bg:#F0E8DF;     --sh-border:#D9C7B0;
+  --si:#4A4A4A;     --si-bg:#E8E8E8;     --si-border:#C7C7C7;
+}
+body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);font-size:16px;min-height:100vh}
+
+/* ══════════════════════════════════════
+   셸 + 사이드바 — 데스크탑 기본값
+   700px 이하에서 탭바로 전환
+══════════════════════════════════════ */
+.shell{
+  max-width:1280px;margin:1.5rem auto;padding:0 1.5rem;
+  display:flex;align-items:flex-start;
+}
+.shell-card{
+  background:var(--surface);
+  border-radius:var(--r-xl);
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  width:100%;
+  min-height:calc(100vh - 3rem);
+}
+
+/* ── 데스크탑 SIDEBAR (세로) ── */
+.sidebar{
+  padding:1.75rem 1rem;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:1.5rem;
+  border-radius:var(--r-xl) 0 0 var(--r-xl);
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:0 8px 1.25rem;border-bottom:1px solid var(--border);
+}
+.sidebar-logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--nav-active-bg),#fff5fc);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--nav-active-fg);font-weight:700;
+}
+.sidebar-logo-text{
+  font-size:14px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;
+}
+.sidebar-logo-text small{
+  display:block;font-size:10px;color:var(--text-soft);
+  font-weight:400;margin-top:2px;letter-spacing:0.04em;
+}
+.sidebar-nav{display:flex;flex-direction:column;gap:4px}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:10px;
+  font-size:13px;color:var(--text-mute);
+  cursor:pointer;transition:all 0.15s;font-weight:500;
+}
+.sidebar-item:hover{background:var(--bg)}
+.sidebar-item.active{
+  background:var(--nav-active-bg);
+  color:var(--nav-active-fg);
+  font-weight:600;
+}
+.sidebar-item-icon{
+  width:18px;height:18px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.sidebar-user{display:none}
+.sidebar-bottom{
+  margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);
+  font-size:11px;color:var(--text-soft);text-align:center;
+}
+
+/* ── CONTENT AREA ── */
+.content{padding:2rem 2.25rem 2.5rem;border-radius:0 var(--r-xl) var(--r-xl) 0}
+
+/* ══════════════════════════════════════
+   700px 이하 — 가로 탭바로 전환
+══════════════════════════════════════ */
+
+
+/* ── LAYOUT ── */
+.main{padding:0}
+.page{display:none}.page.active{display:block}
+
+/* ── HERO (대시보드 헤더) ── */
+.dash-hero{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:1.75rem;gap:2rem;flex-wrap:wrap;
+}
+.dash-hero-left h1{font-size:34px;font-weight:700;letter-spacing:-0.03em;margin-bottom:6px}
+.dash-hero-left p{font-size:13px;color:var(--text-mute)}
+.dash-hero-right{display:flex;align-items:center;gap:12px}
+.dash-hero-icon{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text-mute);
+  transition:all 0.15s;
+}
+.dash-hero-icon:hover{background:var(--border)}
+.dash-hero-user{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 12px 6px 6px;border-radius:30px;
+  background:var(--bg);
+}
+.dash-hero-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--nav-active-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--nav-active-fg);font-weight:700;
+}
+.dash-hero-user-info{font-size:11px;line-height:1.3}
+.dash-hero-user-info b{display:block;font-size:13px;font-weight:600;color:var(--text)}
+.dash-hero-user-info small{color:var(--text-soft)}
+
+/* ── 섹션 타이틀 ── */
+.sec-title{font-size:18px;font-weight:700;margin-bottom:1rem;letter-spacing:-0.02em}
+.sec-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+
+/* ── CARDS BOARD ── */
+.cards-board{
+  display:grid;
+  grid-template-columns:148px 1fr 0.5fr;
+  gap:16px;
+  margin-bottom:2rem;
+  align-items:stretch;
+}
+
+/* 좌측: 큰 활성 카드 + 통계 (Cards 영역) */
+.active-card-section{}
+.home-gallery-section{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.active-card-wrap{
+  perspective:1800px;
+  margin-bottom:1.25rem;
+  position:relative;
+  width:100%;
+  padding-top:75%; /* 4:3 비율 */
+}
+@keyframes scalePop{
+  0%  { opacity:0; transform:scale(0.88); }
+  65% { opacity:1; transform:scale(1.03); }
+  100%{ opacity:1; transform:scale(1);    }
+}
+/* pop은 wrap에 적용 — card 자체의 preserve-3d 컨텍스트를 건드리지 않음 */
+.active-card-wrap.pop{
+  animation:scalePop 0.38s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.active-card{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border-radius:20px;
+  cursor:pointer;
+  transform-style:preserve-3d;
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.active-card.flipped{
+  transform:rotateY(180deg);
+}
+.active-card-face{
+  position:absolute;inset:0;
+  border-radius:20px;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  background:var(--surface);
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+  border:1px solid var(--border);
+}
+.active-card-back{
+  transform:rotateY(180deg);
+}
+/* 카드 뒷면 스크롤바 — 모서리 둥근 옅은 직사각형, 화살표 없음 */
+.card-back-scroll{scrollbar-width:thin;scrollbar-color:rgba(0,0,0,0.12) transparent}
+.card-back-scroll::-webkit-scrollbar{width:4px}
+.card-back-scroll::-webkit-scrollbar-track{background:transparent}
+.card-back-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:99px}
+.card-back-scroll::-webkit-scrollbar-button{display:none;height:0}
+
+/* 학년별 카드 그라데이션 */
+.active-card-front.theme-y1{background:linear-gradient(135deg,#FFD740 0%,#F6C800 100%)}
+.active-card-front.theme-y2{background:linear-gradient(135deg,#3DD9D0 0%,#2BC8BF 100%)}
+.active-card-front.theme-y3{background:linear-gradient(135deg,#6E9FFF 0%,#4A81FF 100%)}
+.active-card-front.theme-adult{background:linear-gradient(135deg,#B07FFF 0%,#995FFF 100%)}
+
+/* 카드 내부 (앞면) */
+.ac-front-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto}
+.ac-brand{font-size:13px;font-weight:600;letter-spacing:0.02em;opacity:0.95}
+.ac-era{font-size:10px;letter-spacing:0.18em;opacity:0.75;margin-top:2px;text-transform:uppercase}
+.ac-flip-hint{
+  font-size:10px;padding:5px 11px;border-radius:20px;
+  background:var(--era-bg,var(--adult-bg));color:var(--era-color,var(--adult));
+  display:inline-flex;align-items:center;gap:5px;font-weight:600;cursor:pointer;
+}
+/* ── 우: 정보 패널 ── */
+.info-panel{
+  background:var(--surface);
+  border-radius:20px;
+  padding:1.25rem 1.4rem;
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;
+}
+.info-panel-item{
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+  font-size:14px;font-weight:500;color:var(--text);
+  cursor:pointer;transition:color 0.15s;
+}
+.info-panel-item:last-child{border-bottom:none}
+.info-panel-item:hover{color:var(--nav-active-fg)}
+.ac-portraits{
+  display:flex;gap:18px;align-items:center;
+  margin:0.5rem 0 0.6rem;
+  font-family:'Courier New',monospace;font-size:18px;letter-spacing:0.4em;font-weight:600;
+}
+.ac-name{font-size:11px;letter-spacing:0.04em;opacity:0.9;margin-bottom:0.4rem}
+.ac-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.ac-bottom-item small{font-size:9px;opacity:0.7;letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:2px}
+.ac-bottom-item b{font-size:13px;font-weight:600}
+
+/* 카드 내부 (뒷면) — 프로필 */
+.ac-back-tabs{
+  display:flex;gap:6px;margin-bottom:1rem;
+}
+.ac-back-tab{
+  padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;
+  cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-mute);
+  transition:all 0.15s;
+}
+.ac-back-tab.active.sh{background:var(--sh-bg);color:var(--sh);border-color:var(--sh-border)}
+.ac-back-tab.active.si{background:var(--si-bg);color:var(--si);border-color:var(--si-border)}
+.ac-back-content{
+  flex:1;display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start;
+  font-size:11px;
+}
+.ac-back-portrait{
+  width:60px;height:60px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:700;
+  flex-shrink:0;
+}
+.ac-back-info-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:11px;
+}
+.ac-back-info-item{display:flex;flex-direction:column;gap:1px}
+.ac-back-info-lbl{font-size:9px;color:var(--text-soft);letter-spacing:0.04em;text-transform:uppercase}
+.ac-back-info-val{font-size:12px;font-weight:600;color:var(--text)}
+.ac-back-tags{
+  display:flex;flex-wrap:wrap;gap:3px;
+  grid-column:1/-1;margin-top:4px;
+}
+
+/* 좌측 하단: 분량 정보 (cloudcash의 Current balance 자리) */
+.active-stats{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+}
+.active-stat-item{
+  background:var(--bg);border-radius:12px;padding:10px 14px;
+  display:flex;flex-direction:column;gap:2px;
+}
+.active-stat-num{font-size:18px;font-weight:700;letter-spacing:-0.02em}
+.active-stat-num.green{color:#E82167}
+.active-stat-num.red{color:#DC2626}
+.active-stat-lbl{font-size:10px;color:var(--text-soft)}
+
+/* ── 좌: 학년 카드 세로 스택 ── */
+.mini-cards-section{display:flex;flex-direction:column;gap:10px;height:100%}
+.mini-cards-hdr{display:none}
+.mini-cards-grid{display:flex;flex-direction:column;gap:10px;height:100%}
+.mini-card{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:12px 12px 10px;
+  cursor:pointer;
+  transition:all 0.2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  display:flex;flex-direction:column;gap:0;
+  flex:1;min-height:0;
+}
+.mini-card:hover{
+  border-color:var(--border-strong);
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,0.09);
+}
+.mini-card.active{opacity:0.45;cursor:default;pointer-events:none}
+.mini-card-badge{
+  display:inline-flex;align-items:center;
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;
+  width:fit-content;margin-bottom:8px;
+}
+.mini-card-badge.theme-y1{background:var(--y1-bg);color:var(--y1)}
+.mini-card-badge.theme-y2{background:var(--y2-bg);color:var(--y2)}
+.mini-card-badge.theme-y3{background:var(--y3-bg);color:var(--y3)}
+.mini-card-badge.theme-adult{background:var(--adult-bg);color:var(--adult)}
+.mini-card-img{
+  width:100%;flex:1;border-radius:10px;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--text-faint);
+  min-height:0;
+}
+.mini-card-lbl{font-size:12px;font-weight:600;color:var(--text);margin-top:6px}
+.mini-card-num,.mini-card-date,.mini-card-icon{display:none}
+
+/* ── BIG TIMELINE ── */
+.big-tl-wrap{margin-bottom:1rem;position:relative}
+/* 외부: 시각 카드 */
+.big-tl-outer{
+  background:var(--surface);border-radius:20px;
+  border:1px solid var(--border);
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+  overflow:visible;
+  position:relative;
+}
+/* 스크롤 암시 그라데이션 — 좌우 각각 */
+.big-tl-outer::before,
+.big-tl-outer::after{
+  content:'';
+  position:absolute;
+  top:0;bottom:0;
+  width:48px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.25s;
+  z-index:10;
+}
+.big-tl-outer::before{
+  left:0;
+  border-radius:20px 0 0 20px;
+  background:linear-gradient(to left,transparent,var(--surface));
+}
+.big-tl-outer::after{
+  right:0;
+  border-radius:0 20px 20px 0;
+  background:linear-gradient(to right,transparent,var(--surface));
+}
+.big-tl-outer.fade-left::before{opacity:1}
+.big-tl-outer.fade-right::after{opacity:1}
+/* 내부: 가로 스크롤 */
+.big-tl-track{
+  display:flex;align-items:flex-start;position:relative;
+  padding:20px 20px 28px;gap:0;
+  overflow-x:auto;overflow-y:visible;
+  scrollbar-width:none;
+  border-radius:20px;
+  width:100%;
+}
+.big-tl-track::-webkit-scrollbar{display:none}
+/* 공동연표: 노드 고정 너비로 PC에서 무한 늘어남 방지 */
+#joint-tl-outer{overflow:hidden}
+#joint-tl-track{overflow-x:auto;overflow-y:visible}
+#joint-tl-track .big-tl-node{flex:0 0 72px;min-width:72px}
+/* 선 */
+.big-tl-line{
+  position:absolute;
+  height:2px;background:var(--border-strong);
+  z-index:0;border-radius:2px;
+  pointer-events:none;
+}
+/* 노드 */
+.big-tl-node{
+  display:flex;flex-direction:column;align-items:center;
+  flex:1;min-width:72px;
+  position:relative;z-index:1;cursor:pointer;
+  padding:18px 4px 20px;
+}
+/* 원형 점 — 레이아웃 크기 항상 10px 고정 */
+.big-tl-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:#D1D5DB;
+  transition:box-shadow 0.2s,background 0.2s;
+  flex-shrink:0;
+  position:relative;z-index:2;
+}
+.big-tl-node.has-ep .big-tl-dot{background:#C5C9D0}
+/* 선택: scale 대신 box-shadow — 레이아웃 크기 불변 */
+.big-tl-node.is-current .big-tl-dot{
+  background:var(--tl-active-color,#E82167);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--tl-active-color,#E82167) 30%,transparent);
+}
+/* 하트 — wrapper 10px 고정 */
+.big-tl-dot.heart,
+.big-tl-node.has-ep .big-tl-dot.heart,
+.big-tl-node.is-current .big-tl-dot.heart{
+  background:transparent !important;
+  width:10px;height:10px;
+  border-radius:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:none;
+}
+.big-tl-dot.heart svg{
+  width:10px;height:10px;display:block;overflow:visible;
+  transition:filter 0.2s;
+}
+/* 하트 선택: drop-shadow로 강조 */
+.big-tl-node.is-current .big-tl-dot.heart svg{
+  filter:drop-shadow(0 0 3px color-mix(in srgb,var(--tl-active-color,#E82167) 50%,transparent));
+}
+/* hover */
+.big-tl-node:hover .big-tl-dot:not(.heart){box-shadow:0 0 0 4px rgba(0,0,0,0.08)}
+.big-tl-node:hover .big-tl-dot.heart svg{filter:drop-shadow(0 0 2px rgba(0,0,0,0.2))}
+/* 라벨 */
+.big-tl-lbl{
+  font-size:11px;color:var(--text-mute);font-weight:500;
+  text-align:center;white-space:nowrap;margin-top:5px;
+}
+.big-tl-node.is-current .big-tl-lbl{color:var(--tl-active-color,#E82167);font-weight:700}
+.big-tl-sub{font-size:9px;color:var(--text-soft);text-align:center;white-space:nowrap}
+/* 말풍선 공통 — 왼쪽 정렬, 항상 한 줄 */
+.big-tl-bubble{
+  position:absolute;left:50%;transform:translateX(-30%);
+  font-size:9px;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:80px;
+  padding:3px 8px;border-radius:6px;
+  pointer-events:none;line-height:1.3;
+  border:1px solid;
+  text-align:left;
+}
+/* 선택된 노드: 말풍선 펼침 */
+.big-tl-node.is-current .big-tl-bubble{
+  max-width:160px;
+  overflow:visible;
+  text-overflow:unset;
+  white-space:nowrap;
+  z-index:20;
+}
+.big-tl-bubble::after{
+  content:'';position:absolute;left:10px;
+  border:4px solid transparent;
+}
+/* 위 말풍선 — 수환(갈색 solid) */
+.big-tl-bubble.top{
+  color:#fff;background:#7B5B3A;border-color:#7B5B3A;
+}
+.big-tl-bubble.top::after{
+  top:100%;border-top-color:#7B5B3A;
+}
+/* 아래 말풍선 — 시몬(다크그레이 solid) */
+.big-tl-bubble.bot{
+  color:#fff;background:#4A4A4A;border-color:#4A4A4A;
+}
+.big-tl-bubble.bot::after{
+  bottom:100%;top:auto;border-bottom-color:#4A4A4A;
+}
+
+/* 300px 이하: 말풍선을 absolute → 인라인(레이블 아래)으로 전환 */
+@media(max-width:300px){
+  .big-tl-bubble{
+    position:static !important;
+    transform:none !important;
+    top:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+    display:block;
+    margin:4px auto 0;
+    max-width:100%;
+    white-space:normal;
+    text-align:center;
+  }
+  /* 꼬리 화살표 숨김 */
+  .big-tl-bubble::after{ display:none }
+  /* 노드 상단 padding 축소 */
+  .big-tl-node{ padding-top:6px }
+}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.stat-tile{
+  background:var(--bg);
+  border-radius:14px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.stat-tile-num{font-size:20px;font-weight:700;letter-spacing:-0.02em}
+.stat-tile-lbl{font-size:10px;color:var(--text-soft)}
+
+/* ── TIMELINE MINI (호환) ── */
+.tl-mini-track{display:flex;align-items:flex-start;gap:0;position:relative;padding-top:8px}
+.tl-mini-track::before{content:'';position:absolute;top:14px;left:6px;right:6px;height:1px;background:var(--border-strong);z-index:0}
+.tl-mini-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;position:relative;z-index:1;cursor:pointer}
+.tl-mini-dot{width:12px;height:12px;border-radius:50%;background:var(--border-strong);border:3px solid var(--surface);transition:all 0.15s}
+.tl-mini-dot.filled{background:var(--text)}
+.tl-mini-dot.colored{background:var(--sh)}
+.tl-mini-lbl{font-size:10px;color:var(--text-soft);text-align:center;white-space:nowrap;font-weight:500}
+.tl-mini-sub{font-size:9px;color:var(--text-faint);text-align:center;white-space:nowrap}
+
+/* ── SUMMARY + SEARCH BOTTOM SECTION ── */
+.bottom-section{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+.bottom-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.25rem 1.5rem;
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+}
+.bottom-card-hdr{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;
+}
+.bottom-card-title{font-size:14px;font-weight:700}
+.bottom-card-sub{font-size:11px;color:var(--text-soft)}
+
+/* ── SEARCH ── */
+.search-input{
+  width:100%;padding:11px 16px;border:1px solid var(--border);
+  border-radius:12px;font-size:13px;background:var(--surface);
+  outline:none;color:var(--text);transition:all 0.15s;
+}
+.search-input:focus{border-color:var(--nav-active-fg)}
+
+/* ── EPISODE LIST ── */
+.ep-list{display:flex;flex-direction:column;gap:6px}
+/* 에피소드 요약 — 레이아웃 영향 없이 오버레이로 표시 */
+.ep-item{
+  background:var(--surface);border:none;
+  border-radius:10px;padding:0.75rem 1rem;
+  display:flex;align-items:center;gap:0.85rem;cursor:pointer;
+  transition:background 0.2s ease, box-shadow 0.2s ease;
+  position:relative;
+}
+.ep-item:hover{
+  background:var(--bg);
+  box-shadow:0 3px 14px rgba(0,0,0,0.07);
+}
+.ep-item.g1:hover{background:#FFFDF5}
+.ep-item.g2:hover{background:#F5FDFB}
+.ep-item.g3:hover{background:#F5F8FF}
+.ep-summary{
+  font-size:11px;color:var(--text-soft);
+  position:absolute;
+  left:1rem;right:1rem;
+  top:100%;
+  margin-top:2px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:6px 10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  opacity:0;pointer-events:none;
+  transform:translateY(-4px);
+  transition:opacity 0.18s ease, transform 0.18s ease;
+  z-index:10;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.ep-item:hover .ep-summary{
+  opacity:1;
+  transform:translateY(0);
+}
+.ep-item-body{display:flex;flex-direction:column;flex:1;min-width:0}
+.ep-item-row{display:flex;align-items:center;gap:0.85rem}
+/* ── 프로필 2열 그리드 — 각 열이 캐릭터 한 명 ── */
+.prof-dual-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  align-items:start;
+}
+.prof-char-col{
+  display:flex;flex-direction:column;gap:10px;
+}
+/* 캐릭터 헤더 카드 */
+.prof-char-hdr{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:1.25rem;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:10px;
+}
+.prof-char-hdr .p-av{margin-bottom:2px}
+.prof-char-hdr h2{font-size:18px;font-weight:600;margin-bottom:2px}
+.prof-char-hdr .en{font-size:11px;color:var(--text-soft);margin-bottom:6px}
+.prof-char-hdr .p-meta{justify-content:center}
+.p-hdr-center{flex-direction:column;align-items:center;text-align:center;gap:10px}
+.p-hdr-center .p-av{flex-shrink:0}
+.p-secs{display:flex;flex-direction:column;gap:10px}
+/* 이 시점의 관계 — 말풍선 모양 */
+.relation-bubble{
+  position:relative;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:1.2rem 1.5rem;
+  text-align:center;
+}
+.relation-bubble::after{
+  content:'';position:absolute;
+  bottom:-10px;left:50%;transform:translateX(-50%);
+  border:10px solid transparent;
+  border-top-color:var(--border);
+  border-bottom:0;
+}
+.relation-bubble::before{
+  content:'';position:absolute;
+  bottom:-9px;left:50%;transform:translateX(-50%);
+  border:10px solid transparent;
+  border-top-color:var(--surface);
+  border-bottom:0;z-index:1;
+}
+/* 갤러리 썸네일 — 정사각형 더 작게, 보더 없음, opacity로 선택 표시 */
+.album-thumb-sm{
+  width:40px;height:40px;border-radius:5px;flex-shrink:0;
+  background:var(--bg);cursor:pointer;
+  opacity:0.5;transition:opacity 0.2s;
+  display:flex;align-items:center;
+  justify-content:center;font-size:8px;color:var(--text-soft);overflow:hidden;
+}
+.album-thumb-sm.active{opacity:1}
+/* 썸네일 래퍼: 가운데 정렬 */
+.gallery-thumbs-wrap{
+  display:flex;justify-content:center;gap:5px;
+  margin-top:8px;
+}
+/* 프로그레스바: 단일 긴 직사각형 */
+.gallery-progress-single{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  width:30%;height:3px;border-radius:3px;
+  background:rgba(255,255,255,0.35);
+  overflow:hidden;z-index:5;
+}
+.gallery-progress-fill-single{
+  height:100%;width:0%;
+  background:rgba(255,255,255,0.9);border-radius:3px;
+  transition:width linear;
+}
+/* 전체보기 바둑판: 가로 6열 정사각형 */
+.gallery-grid-full{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:6px;
+}
+.gallery-grid-full-item{
+  aspect-ratio:1/1;border-radius:8px;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:var(--text-soft);transition:opacity 0.15s;
+}
+.gallery-grid-full-item:hover{opacity:0.8}
+/* 앨범 모바일 3열 */
+@media(max-width:844px){
+  .album-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .album-thumb{height:90px}
+  .album-info{padding:8px}
+  .prof-row{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+}
+.ep-grade{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:4px}
+.ep-grade::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
+.ep-grade.g1{background:var(--y1-bg);color:var(--y1)}
+.ep-grade.g2{background:var(--y2-bg);color:var(--y2)}
+.ep-grade.g3{background:var(--y3-bg);color:var(--y3)}
+.ep-title{font-size:13px;color:var(--text);flex:1;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep-size{font-size:10px;color:var(--text-soft);white-space:nowrap}
+.ep-arrow{font-size:13px;color:var(--text-faint);flex-shrink:0}
+
+/* ── SECTION LABEL ── */
+.section-label{font-size:12px;font-weight:600;color:var(--text-mute);margin-bottom:0.75rem;letter-spacing:0.04em;text-transform:uppercase}
+
+/* ── DETAIL PAGE ── */
+.detail-back{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-mute);cursor:pointer;margin-bottom:1.25rem;width:fit-content}
+.detail-back:hover{color:var(--text)}
+.detail-era-chip{display:inline-flex;align-items:center;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;background:var(--text);color:var(--surface);margin-bottom:1.25rem}
+
+.detail-char-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.detail-char-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;position:relative}
+.detail-char-accent{height:3px}
+.detail-char-body{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.detail-portrait{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:600}
+.detail-char-name{font-size:18px;font-weight:600}
+.detail-char-sub{font-size:12px;color:var(--text-soft)}
+
+.detail-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+.detail-profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.2rem}
+.profile-card-title{font-size:11px;font-weight:600;color:var(--text-soft);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
+.profile-placeholder{height:12px;background:var(--bg);border-radius:4px;margin-bottom:6px}
+
+/* ── DUAL TIMELINE ── */
+.dual-tl{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+.tl-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.2rem}
+.tl-panel-title{font-size:13px;font-weight:600;color:var(--text-mute);margin-bottom:1rem}
+.tl-track{display:flex;align-items:flex-start;position:relative;padding-top:8px;overflow-x:auto;gap:0}
+.tl-track::before{content:'';position:absolute;top:14px;left:0;right:0;height:1px;background:var(--border-strong);z-index:0}
+.tl-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:60px;position:relative;z-index:1;cursor:pointer}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--border-strong);border:3px solid var(--surface);transition:all 0.15s;flex-shrink:0}
+.tl-node.has-ep .tl-dot{background:var(--sh)}
+.tl-node.active .tl-dot{background:var(--text);transform:scale(1.3)}
+.tl-node:hover .tl-dot{transform:scale(1.2)}
+.tl-node-lbl{font-size:10px;color:var(--text-soft);text-align:center;white-space:nowrap}
+.tl-node.active .tl-node-lbl{color:var(--text);font-weight:600}
+.tl-node.has-ep .tl-node-lbl{color:var(--text-mute)}
+
+/* ── GALLERY PANEL ── */
+.gp{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.2rem;margin-bottom:1.5rem}
+.gp-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.gp-title{font-size:14px;font-weight:600;margin-bottom:2px}
+.gp-meta{font-size:11px;color:var(--text-soft)}
+.gp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:1rem}
+.gp-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;cursor:pointer;transition:border-color 0.15s}
+.gp-card:hover{border-color:var(--border-strong)}
+.gp-thumb{height:90px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-soft)}
+.gp-thumb.tl-bg{background:#EEF4FB}
+.gp-thumb.ts-bg{background:#F5EFE8}
+.gp-thumb.tm-bg{background:#EFEFEF}
+.gp-info{padding:8px 10px;background:var(--surface)}
+.gp-info-title{font-size:12px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gp-chips{display:flex;gap:3px;flex-wrap:wrap}
+.gc{font-size:10px;padding:2px 6px;border-radius:10px}
+.gc.sh{background:var(--sh-bg);color:var(--sh)}
+.gc.si{background:var(--si-bg);color:var(--si)}
+.gc.lg{background:var(--y1-bg);color:var(--y1)}
+.gp-divider{height:1px;background:var(--border);margin:1rem 0}
+.gp-ep-label{font-size:11px;font-weight:600;color:var(--text-soft);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
+
+/* ── ALBUM PAGE ── */
+.album-era-tabs{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.album-tab{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-mute);font-size:13px;cursor:pointer;transition:all 0.15s;font-weight:500}
+.album-tab:hover:not(.active){border-color:var(--border-strong)}
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.album-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;cursor:pointer;transition:all 0.2s;position:relative}
+.album-card:hover .album-hover-overlay{opacity:1}
+.album-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.12)}
+.album-thumb{height:160px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text-soft);position:relative;overflow:hidden}
+.album-hover-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.52);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;opacity:0;transition:opacity 0.22s;padding:12px}
+.album-hover-title{font-size:13px;font-weight:700;color:#fff;text-align:center;line-height:1.4}
+.album-hover-sub{font-size:11px;color:rgba(255,255,255,0.7);text-align:center}
+
+/* ── PROFILE PAGE ── */
+.char-switcher{display:flex;gap:8px;margin-bottom:1.5rem}
+.char-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-mute);font-size:13px;cursor:pointer;transition:all 0.15s}
+.char-btn.a-sh{background:var(--sh-bg);color:var(--sh);border-color:var(--sh-border);font-weight:600}
+.char-btn.a-si{background:var(--si-bg);color:var(--si);border-color:var(--si-border);font-weight:600}
+.p-hdr{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1.25rem;display:flex;gap:1.25rem}
+.p-av{width:108px;height:108px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:39px;font-weight:600;flex-shrink:0}
+.p-info h2{font-size:20px;font-weight:600;margin-bottom:4px}
+.en{font-size:12px;color:var(--text-soft);margin-bottom:10px}
+.p-meta{display:flex;flex-wrap:wrap;gap:6px}
+.mc{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--text-mute);background:var(--bg);font-weight:500}
+.p-secs{display:flex;flex-direction:column;gap:10px}
+.p-sec{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.2rem}
+.s-head{font-size:11px;font-weight:600;color:var(--text-soft);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px}
+.ph{height:12px;background:var(--bg);border-radius:4px;margin-bottom:8px}
+
+/* ── READ PAGE ── */
+/* 공통 카드 스타일: 흰 바탕 + 보더 + 연한 그림자 */
+.read-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom:1.25rem;
+}
+/* 검색 카드: 보더만, 그림자 없음 */
+.read-card.no-shadow{
+  box-shadow:none;
+}
+.read-ep-header{
+  padding:1.25rem 1.5rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.read-ep-back{font-size:13px;color:var(--text-mute);cursor:pointer;flex-shrink:0;font-weight:500}
+.read-ep-back:hover{color:var(--text)}
+.read-ep-title{font-size:18px;font-weight:600;flex:1}
+.read-ep-meta{font-size:11px;color:var(--text-soft);white-space:nowrap}
+/* 서사요약 — border 색 계열 연한 배경 */
+.ep-read-summary-box{
+  padding:1rem 1.5rem;
+  background:var(--border);
+}
+/* read-card에 summary가 붙을 때 배경 override */
+.read-card.ep-read-summary-box{
+  background:var(--border);
+}
+.ep-read-summary-lbl{font-size:10px;font-weight:600;color:var(--text-soft);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px}
+.ep-read-summary-text{font-size:13px;color:var(--text-mute);line-height:1.75}
+/* 검색 */
+.read-search-box{padding:0.75rem 1.5rem}
+.read-search-box input::placeholder{text-align:center}
+.read-search-box input{text-align:center}
+.reader-wrap{max-width:680px;margin:0 auto}
+/* 롤플레이 로그 래퍼 */
+/* ── 카카오톡 스타일 대화 로그 ── */
+.dlg-card{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+  padding:1.25rem;
+  font-family:'Ridibatang',Georgia,'Noto Serif KR',serif;
+}
+.dlg{display:flex;flex-direction:column;gap:14px}
+.dt{display:flex;flex-direction:column;gap:0;width:100%}
+.dt.hidden{display:none}
+
+/* 공통 메시지 행 */
+.msg-row{
+  display:flex;align-items:flex-end;gap:8px;
+  max-width:78%;
+  min-width:0;
+  overflow:hidden;
+}
+/* 정수환(sh): 왼쪽 정렬 */
+.dt.sh .msg-row{ flex-direction:row; margin-right:auto }
+/* 최시몬(si): 오른쪽 정렬 */
+.dt.si .msg-row{ flex-direction:row-reverse; margin-left:auto }
+
+/* 프로필 아바타 */
+.msg-avatar{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;
+  align-self:flex-start;
+}
+.dt.sh .msg-avatar{ background:var(--sh-bg);color:var(--sh) }
+.dt.si .msg-avatar{ background:var(--si-bg);color:var(--si) }
+
+/* 이름 + 말풍선 묶음 */
+.msg-body{ display:flex;flex-direction:column;gap:4px;min-width:0;overflow:hidden }
+.dt.si .msg-body{ align-items:flex-end }
+
+/* 이름 레이블 */
+.msg-name{
+  font-size:11px;font-weight:600;padding:0 2px;
+  font-family:'SUITE',-apple-system,sans-serif;
+}
+.dt.sh .msg-name{ color:var(--sh) }
+.dt.si .msg-name{ color:var(--si) }
+
+/* 말풍선 */
+.db{
+  display:block;
+  padding:10px 14px;
+  font-size:13.5px;line-height:1.7;
+  border-radius:18px;
+  position:relative;
+  word-break:keep-all;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+/* 정수환: 연한 갈색 배경, 좌하단 꼬리 */
+.dt.sh .db{
+  background:var(--sh-bg);color:var(--sh);
+  border-radius:4px 18px 18px 18px;
+}
+/* 최시몬: 연한 회색 배경, 우하단 꼬리 */
+.dt.si .db{
+  background:var(--si-bg);color:var(--si);
+  border-radius:18px 4px 18px 18px;
+}
+/* 더미 텍스트 라인 — 고정 width는 HTML에 있으나 max-width:100%로 제한 */
+.pht{height:11px;background:currentColor;opacity:0.18;border-radius:4px;margin-bottom:5px;max-width:100%}
+.pht:last-child{margin-bottom:0}
+
+/* ── 앨범 포스트 / 프로필 갤러리 공통 ── */
+.album-post-main, .profile-gallery-main{
+  width:100%;height:320px;border-radius:var(--r-lg);
+  background:var(--bg);display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--text-soft);overflow:hidden;position:relative;
+}
+.album-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,0.95);border:1px solid var(--border);
+  border-radius:50%;width:36px;height:36px;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:2;transition:all 0.15s;
+  line-height:1;padding:0;
+}
+.album-arrow:hover{background:var(--surface);box-shadow:0 4px 12px rgba(0,0,0,0.10)}
+.album-arrow-left{left:12px}
+.album-arrow-right{right:12px}
+.album-indicators{
+  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  display:flex;gap:5px;
+}
+.album-indicator{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.6);cursor:pointer;transition:all 0.2s;
+}
+.album-indicator.active{background:var(--surface);transform:scale(1.2)}
+.album-thumbs{
+  display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:none;
+}
+.album-thumbs::-webkit-scrollbar{display:none}
+.album-thumb-item{
+  width:80px;height:60px;border-radius:8px;flex-shrink:0;
+  background:var(--bg);cursor:pointer;border:2px solid transparent;
+  transition:border-color 0.15s;display:flex;align-items:center;
+  justify-content:center;font-size:10px;color:var(--text-soft);overflow:hidden;
+}
+.album-thumb-item.active{border-color:var(--text)}
+.album-post-body{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.5rem;margin-top:1.25rem;
+}
+
+/* ── 프로필 갤러리 ── */
+.profile-gallery-wrap{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.2rem;margin-bottom:1.25rem;
+}
+.profile-gallery-all-btn{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text-mute);cursor:pointer;
+  padding:6px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface);transition:all 0.15s;font-weight:500;
+}
+.profile-gallery-all-btn:hover{border-color:var(--border-strong);background:var(--bg)}
+.profile-gallery-main{height:260px}
+
+/* ── 블로그 포스트 ── */
+.blog-post-wrap{max-width:680px;margin:0 auto}
+.blog-post-cover{
+  width:100%;height:340px;border-radius:var(--r-lg);
+  background:var(--bg);display:flex;align-items:center;
+  justify-content:center;font-size:14px;color:var(--text-soft);
+  margin-bottom:2rem;overflow:hidden;
+}
+.blog-post-body{display:flex;flex-direction:column;gap:1.5rem}
+.blog-block-img{
+  width:100%;border-radius:var(--r-md);overflow:hidden;
+  background:var(--bg);border:1px solid var(--border);
+}
+.blog-block-img-inner{
+  width:100%;height:280px;display:flex;align-items:center;
+  justify-content:center;font-size:13px;color:var(--text-soft);
+}
+.blog-block-img-caption{
+  padding:8px 12px;font-size:11px;color:var(--text-soft);
+  border-top:1px solid var(--border);background:var(--surface);
+}
+.blog-block-text{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:1.5rem;
+  font-size:14px;color:var(--text);line-height:1.9;
+}
+.blog-block-text .blog-h2{
+  font-size:16px;font-weight:600;color:var(--text);
+  margin-bottom:0.75rem;
+}
+.blog-block-divider{height:1px;background:var(--border)}
+.profile-gallery-label{font-size:13px;color:var(--text-mute);margin-bottom:6px}
+
+/* ── 에피소드 개요 텍스트 ── */
+.ep-overview-text{
+  font-size:14px;color:var(--text-mute);line-height:1.8;
+  padding:1.25rem;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg);
+  margin-bottom:1.25rem;
+  transition:opacity 0.3s;
+}
+
+/* ── TAG ── */
+.tag{font-size:10px;padding:3px 8px;border-radius:20px;background:var(--bg);color:var(--text-mute);border:1px solid var(--border);display:inline-block;font-weight:500}
+
+/* ── 검색 힌트 칩 ── */
+.hint-chip{font-size:12px;padding:5px 12px;border-radius:20px;background:var(--surface);color:var(--text-mute);border:1px solid var(--border);cursor:pointer;transition:all 0.15s;display:inline-block;font-weight:500}
+.hint-chip:hover{background:var(--bg);border-color:var(--border-strong);color:var(--text)}
+
+/* 학년 칩스: 가운데 정렬 */
+.profile-era-tabs{display:flex;gap:8px;margin:1rem 0;flex-wrap:wrap;justify-content:center}
+.profile-era-tab{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-mute);font-size:13px;cursor:pointer;transition:all 0.15s;font-weight:500}
+.profile-era-tab:hover:not(.active){background:var(--bg);border-color:var(--border-strong)}
+
+/* ── 에피소드 학년 필터 칩 ── */
+/* ── 에피소드 학년 필터 칩 ── */
+.ep-filter-chip{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-mute);font-size:13px;cursor:pointer;transition:all 0.15s;font-weight:500}
+.ep-filter-chip:hover:not(.active){background:var(--bg);border-color:var(--border-strong)}
+
+/* ── 공통 active 색상 (ep-filter-chip / album-tab / profile-era-tab) ── */
+.ep-filter-chip.active,
+.album-tab.active,
+.profile-era-tab.active{
+  color:#fff;border-color:transparent;font-weight:600;
+  background:#6B7280; /* 전체: 미드 그레이 */
+}
+/* data-era별 학년 색상 */
+.ep-filter-chip.active[data-era="y1"],
+.album-tab.active[data-era="y1"],
+.profile-era-tab.active[data-era="y1"]{ background:var(--y1);color:#fff }
+.ep-filter-chip.active[data-era="y2"],
+.album-tab.active[data-era="y2"],
+.profile-era-tab.active[data-era="y2"]{ background:var(--y2);color:#fff }
+.ep-filter-chip.active[data-era="y3"],
+.album-tab.active[data-era="y3"],
+.profile-era-tab.active[data-era="y3"]{ background:var(--y3);color:#fff }
+.ep-filter-chip.active[data-era="adult"],
+.album-tab.active[data-era="adult"],
+.profile-era-tab.active[data-era="adult"]{ background:var(--adult);color:#fff }
+
+/* ── 항상 표시되는 상단 헤더 ── */
+.global-hero{
+  margin-bottom:1.75rem;
+  padding-bottom:1.25rem;
+  border-bottom:1px solid var(--border);
+}
+.global-hero-title{font-size:28px;font-weight:700;letter-spacing:-0.03em;margin-bottom:5px}
+.global-hero-sub{font-size:13px;color:var(--text-mute)}
+.global-hero-sub .heart{color:var(--nav-active-fg)}
+
+/* ══ 반응형 ══ */
+
+/* 641px~1280px: 사이드바·카드보드 비율 유지하며 축소 */
+@media(max-width:1280px) and (min-width:641px){
+  .shell{padding:0 1rem}
+  .shell-card{grid-template-columns:clamp(120px,15vw,220px) minmax(0,1fr)}
+  .cards-board{grid-template-columns:clamp(72px,9vw,148px) 1fr 0.5fr;gap:clamp(6px,1vw,16px)}
+  /* 통계 칸 축소 */
+  .active-stat-item{padding:clamp(6px,1vw,10px) clamp(8px,1.2vw,14px)}
+  .active-stat-num{font-size:clamp(13px,1.6vw,18px)}
+  .active-stat-lbl{font-size:clamp(9px,0.9vw,10px)}
+  /* 미니카드 축소 */
+  .mini-card{padding:clamp(7px,1vw,12px)}
+  .mini-card-badge{font-size:clamp(9px,1vw,11px);padding:2px 7px}
+}
+
+/* bottom-section — 좁아질 때 텍스트 말줄임 처리 */
+.bottom-card-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.summary-text{
+  font-size:13px;color:var(--text-mute);line-height:1.85;
+  display:-webkit-box;-webkit-line-clamp:10;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+@media(max-width:900px) and (min-width:641px){
+  .bottom-section{grid-template-columns:1fr;gap:12px}
+  .summary-text{-webkit-line-clamp:4}
+}
+
+@media(max-width:640px){
+
+  /* 모바일에서만 숨길 요소 */
+  .mobile-hide{display:none !important}
+
+  /* ── 셸: grid → flex 세로 전환 ── */
+  .shell{margin:0;padding:0}
+  .shell-card{
+    display:flex;
+    flex-direction:column;
+    border-radius:0;
+    min-height:100vh;
+  }
+
+  /* ── 사이드바 → 가로 탭바 ── */
+  .sidebar{
+    flex-direction:row;
+    align-items:center;
+    padding:0;
+    height:52px;
+    border-right:none;
+    border-bottom:none;
+    border-radius:0 0 var(--r-lg) var(--r-lg); /* 아래 두 모서리만 */
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    gap:0;
+    overflow-x:auto;
+    scrollbar-width:none;
+    position:sticky;top:0;z-index:50;
+    background:var(--surface);
+    flex-shrink:0;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-x;
+  }
+  .sidebar::-webkit-scrollbar{display:none}
+  /* 로고: 고정(sticky) — overflow 스크롤에서 빠져나와 항상 왼쪽 고정 */
+  .sidebar-logo{
+    position:sticky;left:0;z-index:2;
+    background:var(--surface);
+    padding:0 10px 0 0.875rem;
+    border-bottom:none;
+    border-right:none;
+    margin-right:0;
+    flex-shrink:0;
+    height:100%;
+    align-items:center;
+    /* 오른쪽 페이드 */
+    -webkit-mask-image:linear-gradient(to right,black 80%,transparent 100%);
+    mask-image:linear-gradient(to right,black 80%,transparent 100%);
+    padding-right:20px;
+  }
+  .sidebar-logo-mark{width:28px;height:28px;font-size:14px;border-radius:8px}
+  .sidebar-logo-text{display:none}
+  .sidebar-nav{flex-direction:row;gap:2px;align-items:center;flex-shrink:0;padding:0 0.875rem 0 0}
+  .sidebar-item{padding:6px 11px;font-size:12px;white-space:nowrap;flex-shrink:0;gap:5px}
+  .sidebar-item-icon{width:14px;height:14px}
+  .sidebar-bottom{display:none}
+  .sidebar-user{
+    display:flex;align-items:center;gap:6px;
+    margin-left:auto;flex-shrink:0;
+    padding-left:10px;
+    height:100%;
+  }
+  .sidebar-user-name{font-size:11px;color:var(--text-mute);font-weight:500;white-space:nowrap}
+
+  /* ── 콘텐츠 영역 ── */
+  .content{padding:1rem 0.875rem 2rem;flex:1}
+  .global-hero{margin-bottom:1rem;padding-bottom:0.875rem}
+  .global-hero-title{font-size:20px;margin-bottom:3px}
+  .global-hero-sub{font-size:11px}
+  .dash-hero{
+    padding:0.75rem 0 0.6rem;
+    margin-bottom:0.75rem;
+  }
+  .dash-hero-left h1{font-size:20px;margin-bottom:3px}
+  .dash-hero-left p{font-size:11px}
+
+  /* ── cards-board: flex 세로, 순서 제어 ── */
+  .cards-board{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px;
+    margin-bottom:1.25rem;
+  }
+
+  /* 메인 카드: order 0 → 항상 맨 위 */
+  .active-card-section{
+    order:0 !important;
+    width:100%;
+  }
+  .active-card-wrap{
+    padding-top:75%; /* 4:3 모바일도 동일 */
+  }
+  .active-stats{display:none}
+
+  /* 갤러리: order 1 → 카드 바로 아래 */
+  .home-gallery-section{
+    order:1 !important;
+    width:100%;
+    min-height:240px;
+  }
+
+  /* 나머지 카드들: order 2 → 갤러리 아래, 정사각형 한 줄 */
+  .mini-cards-section{
+    order:2 !important;
+    display:flex !important;
+    flex-direction:row !important;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    gap:8px;
+    width:100%;
+  }
+  .mini-cards-section::-webkit-scrollbar{display:none}
+  .mini-cards-grid{
+    display:flex !important;
+    flex-direction:row !important;
+    gap:8px;
+    flex-wrap:nowrap;
+    width:100%;
+  }
+  .mini-cards-grid{width:100%}
+  .mini-card{
+    flex:1 1 0;
+    min-width:0;
+    aspect-ratio:1/1;
+    padding:9px;
+    border-radius:13px;
+    flex-shrink:1;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:space-between;
+  }
+  .mini-card-img{
+    flex:1;height:auto;
+    margin-top:4px;border-radius:7px;
+  }
+  .mini-card-lbl{font-size:11px;margin-top:4px}
+
+  /* ── 연표: 스크롤 + 폰트 축소 ── */
+  .big-tl-wrap{margin-bottom:1rem}
+  .big-tl-outer{border-radius:16px}
+  .big-tl-outer::before{border-radius:16px 0 0 16px}
+  .big-tl-outer::after{border-radius:0 16px 16px 0}
+  .big-tl-track{
+    padding:20px 16px 28px;
+    overflow-x:auto;
+    justify-content:flex-start;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-x;
+    scrollbar-width:none;
+    border-radius:16px;
+  }
+  .big-tl-track::-webkit-scrollbar{display:none}
+  .big-tl-node{min-width:60px;flex:0 0 auto;padding:18px 2px 20px}
+  .big-tl-lbl{font-size:9px}
+  .big-tl-sub{font-size:8px}
+  .big-tl-bubble{font-size:8px;padding:2px 6px;max-width:72px}
+  .big-tl-node.is-current .big-tl-bubble{max-width:130px;overflow:visible;text-overflow:unset}
+
+  /* ── 서사요약 + 에피소드: 1열 ── */
+  .bottom-section{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  /* ── 에피소드 열람 헤더: 모바일 레이아웃 ── */
+  .read-ep-header{
+    display:grid;
+    grid-template-areas:
+      "back  back"
+      "title title"
+      ".     meta";
+    grid-template-columns:1fr auto;
+    grid-template-rows:auto auto;
+    gap:6px 0;
+    padding:1rem 1.25rem;
+    align-items:start;
+  }
+  .read-ep-back{
+    grid-area:back;
+    font-size:12px;
+  }
+  .read-ep-title{
+    grid-area:title;
+    font-size:16px;
+    text-align:center;
+    flex:unset;
+  }
+  .read-ep-meta{
+    grid-area:meta;
+    font-size:11px;
+    text-align:right;
+  }
+
+  /* ── 말풍선 모바일 ── */
+  .dt{ width:100%; display:flex; flex-direction:column }
+  /* 수환: 왼쪽 */
+  .dt.sh{ align-items:flex-start }
+  .dt.sh .msg-row{
+    flex-direction:row !important;
+    align-items:flex-end;
+    margin-right:auto !important;
+    margin-left:0 !important;
+    max-width:88%;
+  }
+  /* 시몬: 오른쪽 */
+  .dt.si{ align-items:flex-end }
+  .dt.si .msg-row{
+    flex-direction:row-reverse !important;
+    align-items:flex-end;
+    margin-left:auto !important;
+    margin-right:0 !important;
+    max-width:88%;
+  }
+  .dt.si .msg-body{ align-items:flex-end }
+  .msg-avatar{ width:26px;height:26px;font-size:10px }
+  .db{ font-size:12.5px;padding:8px 12px }
+}
+
+/* 480px 이하: prof-dual-grid 1열 */
+@media(max-width:480px){
+  .prof-dual-grid{ grid-template-columns:1fr; gap:20px }
+}
+
+/* 모바일: 카드 뒷면 칩스 2배 크기 */
+@media(max-width:640px){
+  .back-chips-wrap span{
+    font-size:14px !important;
+    padding:4px 10px !important;
+  }
+  .back-chips-wrap{
+    gap:5px !important;
+  }
+}
+
+/* ── 480px 이하: 서사요약 + 에피소드 ── */
+@media(max-width:480px){
+  /* 서사요약·에피소드 카드: 패딩 축소 */
+  .bottom-section{ gap:8px }
+  .bottom-card{ padding:1rem 1rem; border-radius:14px }
+
+  /* 에피소드 헤더: 학년 레이블 왼위 / 제목 왼아래 / 전체보기 오른쪽 */
+  .bottom-card-hdr{
+    display:grid;
+    grid-template-areas:
+      "grade viewall"
+      "title viewall";
+    grid-template-columns:1fr auto;
+    align-items:center;
+    gap:2px 8px;
+    margin-bottom:0.75rem;
+  }
+  .bottom-card-title{ grid-area:title; font-size:15px; font-weight:700 }
+  .bottom-card-sub{ grid-area:grade; font-size:11px }
+  .bottom-card-hdr > span{ grid-area:viewall; align-self:center }
+
+  /* ep-item: 학년 배지 왼위 / 제목 아래 / 화살표+분량 오른쪽 */
+  .ep-item{
+    display:grid;
+    grid-template-areas:
+      "grade arrow"
+      "body  body";
+    grid-template-columns:1fr auto;
+    gap:4px 8px;
+    padding:0.65rem 0.75rem;
+    align-items:start;
+  }
+  .ep-grade{ grid-area:grade; width:fit-content }
+  .ep-arrow{ grid-area:arrow; align-self:center; font-size:12px }
+  .ep-item-body{
+    grid-area:body;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .ep-item-row{ flex-wrap:wrap; gap:4px }
+  .ep-title{ font-size:12px }
+  .ep-size{ font-size:10px }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+<div class="shell-card">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-logo" onclick="SP('home')" style="cursor:pointer">
+    <div class="sidebar-logo-mark">하</div>
+    <div class="sidebar-logo-text">
+      Harmony Archive
+      <small>Hamonchive</small>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-item active mobile-hide" data-tab="home" onclick="SP('home')">
+      <span class="sidebar-item-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 7L8 2L14 7V13C14 13.5523 13.5523 14 13 14H10V10H6V14H3C2.44772 14 2 13.5523 2 13V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </span>
+      홈
+    </div>
+    <div class="sidebar-item" data-tab="profile" onclick="SP('profile')">
+      <span class="sidebar-item-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14C2 11 4.5 9 8 9C11.5 9 14 11 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </span>
+      프로필
+    </div>
+    <div class="sidebar-item" data-tab="episodes" onclick="SP('episodes')">
+      <span class="sidebar-item-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="5" y1="10.5" x2="9" y2="10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </span>
+      에피소드
+    </div>
+    <div class="sidebar-item" data-tab="album" onclick="SP('album')">
+      <span class="sidebar-item-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="1.2" stroke="currentColor" stroke-width="1.5"/><path d="M3 12L6.5 8.5L9 11L11 9L13.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </span>
+      로그
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    Harmony Archive<br>v3 · 2026
+  </div>
+</aside>
+
+<!-- ── CONTENT ── -->
+<main class="content">
+
+<!-- ── 항상 표시되는 헤더 ── -->
+<div class="global-hero">
+  <h1 class="global-hero-title">하모니 아카이브</h1>
+  <p class="global-hero-sub">정수환 <span class="heart">♥</span> 최시몬</p>
+</div>
+
+<!-- ════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- ── CARDS BOARD ── -->
+  <div class="cards-board">
+
+    <!-- 데스크탑: 좌(학년목록) | 모바일: 2번째(아래 한 줄) -->
+    <div class="mini-cards-section">
+      <div class="mini-cards-grid" id="mini-cards-grid"></div>
+    </div>
+
+    <!-- 데스크탑: 우(큰 카드) | 모바일: 1번째(상단 크게) -->
+    <div class="active-card-section">
+      <div class="active-card-wrap">
+        <div class="active-card" id="active-card" onclick="flipActiveCard()">
+          <!-- 앞면 / 뒷면은 JS로 렌더 -->
+        </div>
+      </div>
+      <div class="active-stats" id="active-stats"></div>
+    </div>
+
+    <!-- 데스크탑: 우우(갤러리) | 모바일: 3번째 -->
+    <div class="home-gallery-section">
+      <div style="flex:1;width:100%;border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);position:relative">
+        <div id="home-gallery-slide" style="position:absolute;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity 0.6s ease">
+          <div style="font-size:12px;color:var(--text-faint)">사진 없음</div>
+        </div>
+        <!-- 프로그레스바 — 우상단, 컴포넌트 가로의 1/4 -->
+        <div style="position:absolute;top:10px;right:10px;width:25%;height:4px;background:rgba(255,255,255,0.3);border-radius:99px;overflow:hidden">
+          <div id="home-gallery-progress" style="height:100%;width:0%;background:rgba(255,255,255,0.95);border-radius:99px;transition:none"></div>
+        </div>
+        <!-- 캐러셀 점 — 하단 가운데 -->
+        <div id="home-gallery-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:4px;align-items:center"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 공동 연표 ── -->
+  <div style="margin-bottom:1.75rem">
+    <div class="sec-title-row" style="margin-bottom:1rem">
+      <div class="sec-title">타임라인</div>
+    </div>
+    <div class="big-tl-outer" id="joint-tl-outer">
+      <div class="big-tl-track" id="joint-tl-track"></div>
+    </div>
+    <!-- 클릭 시 상세 패널 -->
+    <div id="joint-tl-detail" style="display:none;margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1rem 1.25rem;box-shadow:0 2px 12px rgba(0,0,0,0.06)"></div>
+  </div>
+
+  <!-- ── BIG TIMELINE ── -->
+  <div class="big-tl-wrap">
+    <div class="sec-title-row">
+      <div class="sec-title">주요사건</div>
+      <div style="font-size:11px;color:var(--text-soft)" id="big-tl-context">전체 흐름</div>
+    </div>
+    <div class="big-tl-outer">
+      <div class="big-tl-track" id="big-tl-track"></div>
+    </div>
+  </div>
+
+  <!-- ── 서사요약 + 에피소드 검색 ── -->
+  <div class="bottom-section">
+
+    <!-- 좌: 서사요약 -->
+    <div class="bottom-card">
+      <div class="bottom-card-hdr">
+        <div>
+          <div class="bottom-card-title">서사 요약</div>
+          <div class="bottom-card-sub" id="home-summary-sub">전체 흐름</div>
+        </div>
+      </div>
+      <p class="summary-text" id="home-summary-text">해람초·해람중 9년을 한 번도 같은 반이 되지 않은 두 사람이, 해솔고 1학년에서 처음으로 짝꿍이 된다. 수환의 냉정한 말투와 시몬의 흘려버리는 여유가 충돌하고 스치며, 2학년의 단추·김밥·손목 묶기·제주를 거쳐 서로를 점점 더 선명하게 의식하게 된다. 3학년 동아리실 첫눈 이후, 졸업식 전날 밤 소주 8병 자리에서 오래 참았던 말들이 흘러나온다.</p>
+    </div>
+
+    <!-- 우: 학년별 에피소드 목록 -->
+    <div class="bottom-card">
+      <div class="bottom-card-hdr">
+        <div>
+          <div class="bottom-card-title" id="home-ep-title">에피소드</div>
+          <div class="bottom-card-sub" id="home-ep-sub">1학년</div>
+        </div>
+        <span onclick="SP('episodes')" style="font-size:11px;color:var(--era-color,var(--adult));font-weight:600;cursor:pointer;white-space:nowrap">전체보기 →</span>
+      </div>
+      <div class="ep-list" id="home-ep-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 기존 페이지(profile/episodes/album)는 아래에 그대로 유지 -->
+
+
+<!-- ════════════════════════════════════════
+     EPISODES PAGE
+════════════════════════════════════════ -->
+<div id="page-episodes" class="page">
+
+
+
+  <!-- 목록 뷰 -->
+  <div id="ep-list-view">
+    <div style="font-size:20px;font-weight:500;margin-bottom:1rem">전체 에피소드</div>
+
+    <!-- 전체/학년별 서사요약 -->
+    <div class="ep-overview-text" id="ep-overview-text">
+      해람초·해람중 9년을 단 한 번도 같은 반이 되지 않고 지나쳐 온 두 사람이, 해솔고 1학년에서 처음으로 짝꿍이 된다. 수환의 냉정한 말투와 시몬의 흘려버리는 여유가 충돌하고 스치며, 2학년의 단추 사건·김밥·손목 묶기·제주 수학여행을 거쳐 서로를 점점 더 선명하게 의식하게 된다. 3학년 동아리실 첫눈 이후, 졸업식 전날 밤 소주 8병 자리에서 오래 참았던 말들이 흘러나온다. 첫 데이트를 마치고 버스로 10분 거리의 도시에 살게 된 지금, 대전행 기차표가 두 사람 사이의 새로운 시간을 예고하고 있다.
+    </div>
+
+    <!-- 학년 필터 칩스 -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem" id="ep-grade-chips">
+      <div class="ep-filter-chip active" onclick="filterEpsByGrade('all', event)">전체</div>
+      <div class="ep-filter-chip" data-era="y1" onclick="filterEpsByGrade('y1', event)">1학년</div>
+      <div class="ep-filter-chip" data-era="y2" onclick="filterEpsByGrade('y2', event)">2학년</div>
+      <div class="ep-filter-chip" data-era="y3" onclick="filterEpsByGrade('y3', event)">3학년</div>
+    </div>
+
+    <!-- 키워드 검색바 -->
+    <div style="margin-bottom:1.25rem">
+      <input class="search-input" type="text" placeholder="에피소드 키워드 검색" id="ep-keyword-search" oninput="filterEpsByKeyword(this.value)">
+    </div>
+
+    <div class="ep-list" id="full-ep-list"></div>
+  </div>
+
+  <!-- 열람 뷰 (에피소드 클릭 시) -->
+  <div id="ep-read-view" style="display:none">
+    <!-- 헤더 -->
+    <div class="read-card read-ep-header">
+      <div class="read-ep-back" onclick="closeEpRead()">← 뒤로</div>
+      <div class="read-ep-title" id="ep-read-title">에피소드 제목</div>
+      <div class="read-ep-meta" id="ep-read-meta">—</div>
+    </div>
+    <div class="reader-wrap">
+      <!-- 서사요약 -->
+      <div class="read-card ep-read-summary-box" id="ep-read-summary-box">
+        <div class="ep-read-summary-lbl">이 장면은</div>
+        <div class="ep-read-summary-text" id="ep-read-summary-text"></div>
+      </div>
+      <!-- 검색 -->
+      <div class="read-card no-shadow read-search-box">
+        <input class="search-input" type="text" id="ep-read-search"
+          placeholder="대화·장면 검색" oninput="filterReadLines(this.value)"
+          style="border:none;box-shadow:none;padding:0;font-size:13px;background:transparent;width:100%">
+      </div>
+      <!-- 롤플레이 로그 -->
+      <div class="dlg-card">
+        <div class="dlg" id="ep-read-dlg">
+          <div class="dt sh">
+            <div class="msg-row">
+              <div class="msg-avatar">수</div>
+              <div class="msg-body">
+                <div class="msg-name">정수환</div>
+                <div class="db"><div class="pht" style="width:200px"></div><div class="pht" style="width:160px"></div><div class="pht" style="width:180px"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="dt si">
+            <div class="msg-row">
+              <div class="msg-avatar">시</div>
+              <div class="msg-body">
+                <div class="msg-name">최시몬</div>
+                <div class="db"><div class="pht" style="width:180px"></div><div class="pht" style="width:140px"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="dt sh">
+            <div class="msg-row">
+              <div class="msg-avatar">수</div>
+              <div class="msg-body">
+                <div class="msg-name">정수환</div>
+                <div class="db"><div class="pht" style="width:160px"></div><div class="pht" style="width:200px"></div><div class="pht" style="width:120px"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="dt si">
+            <div class="msg-row">
+              <div class="msg-avatar">시</div>
+              <div class="msg-body">
+                <div class="msg-name">최시몬</div>
+                <div class="db"><div class="pht" style="width:190px"></div><div class="pht" style="width:150px"></div><div class="pht" style="width:170px"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 이전글 / 목록 / 다음글 네비게이터 -->
+      <div id="ep-read-nav" style="
+        display:flex;align-items:center;justify-content:space-between;
+        gap:8px;margin-top:1.25rem;padding:14px 18px;
+        background:var(--surface);border:1px solid var(--border);
+        border-radius:var(--r-lg);font-size:12px;
+      ">
+        <div id="ep-nav-prev" onclick="" style="
+          display:flex;align-items:center;gap:6px;cursor:pointer;
+          color:var(--text-mute);flex:1;min-width:0;
+          transition:color 0.15s;
+        " onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-mute)'">
+          <span style="flex-shrink:0;font-size:14px">‹</span>
+          <span id="ep-nav-prev-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span>
+        </div>
+        <div onclick="closeEpRead()" style="
+          flex-shrink:0;cursor:pointer;font-weight:600;
+          color:var(--text-mute);padding:0 10px;
+          transition:color 0.15s;
+        " onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-mute)'">목록</div>
+        <div id="ep-nav-next" onclick="" style="
+          display:flex;align-items:center;gap:6px;cursor:pointer;
+          color:var(--text-mute);flex:1;min-width:0;justify-content:flex-end;
+          transition:color 0.15s;
+        " onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-mute)'">
+          <span id="ep-nav-next-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span>
+          <span style="flex-shrink:0;font-size:14px">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     ALBUM PAGE
+════════════════════════════════════════ -->
+<div id="page-album" class="page">
+
+  <!-- 목록 뷰 -->
+  <div id="album-list-view">
+    <div style="font-size:20px;font-weight:500;margin-bottom:1.25rem">앨범</div>
+    <div class="album-era-tabs">
+      <div class="album-tab active" data-era="y1" onclick="switchAlbum('y1',event)">1학년</div>
+      <div class="album-tab" data-era="y2" onclick="switchAlbum('y2',event)">2학년</div>
+      <div class="album-tab" data-era="y3" onclick="switchAlbum('y3',event)">3학년</div>
+      <div class="album-tab" data-era="adult" onclick="switchAlbum('adult',event)">성인</div>
+    </div>
+    <div class="album-grid" id="album-grid"></div>
+  </div>
+
+  <!-- 포스트 뷰 (갤러리 카드 클릭 시) -->
+  <div id="album-post-view" style="display:none">
+    <div class="read-ep-header">
+      <div class="read-ep-back" onclick="closeAlbumPost()">← 앨범 목록</div>
+      <div class="read-ep-title" id="album-post-title">제목</div>
+      <div class="read-ep-meta" id="album-post-meta">—</div>
+    </div>
+
+    <!-- 블로그 포스트 본문 -->
+    <div class="blog-post-wrap">
+
+      <!-- 커버 이미지 -->
+      <div class="blog-post-cover" id="album-post-cover"></div>
+
+      <!-- 포스트 본문 영역 (이미지+텍스트 블록 반복) -->
+      <div class="blog-post-body" id="album-post-body"></div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PROFILE PAGE
+════════════════════════════════════════ -->
+<div id="page-profile" class="page">
+
+  <!-- 학년 탭 -->
+  <div class="profile-era-tabs" id="profile-era-tabs-global" style="margin-bottom:1.25rem">
+    <div class="profile-era-tab active" data-era="y1" onclick="switchProfileEraGlobal('y1',event)">1학년</div>
+    <div class="profile-era-tab" data-era="y2" onclick="switchProfileEraGlobal('y2',event)">2학년</div>
+    <div class="profile-era-tab" data-era="y3" onclick="switchProfileEraGlobal('y3',event)">3학년</div>
+    <div class="profile-era-tab" data-era="adult" onclick="switchProfileEraGlobal('adult',event)">성인</div>
+  </div>
+
+  <!-- 이 시점의 관계 — 말풍선 -->
+  <div class="relation-bubble" id="profile-relation-section" style="margin-bottom:1.25rem">
+    <div class="s-head" style="text-align:center">이 시점의 관계</div>
+    <div class="ph" style="width:70%;margin:0 auto 6px"></div>
+    <div class="ph" style="width:85%;margin:0 auto 6px"></div>
+    <div class="ph" style="width:60%;margin:0 auto"></div>
+  </div>
+
+  <!-- 두 캐릭터 카드: 가로 2열, 각각 세로 정렬 -->
+  <div class="prof-dual-grid">
+    <!-- 정수환 -->
+    <div class="prof-char-col" id="prof-col-sh">
+      <!-- JS로 렌더 -->
+    </div>
+    <!-- 최시몬 -->
+    <div class="prof-char-col" id="prof-col-si">
+      <!-- JS로 렌더 -->
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+</main><!-- /content -->
+</div><!-- /shell-card -->
+</div><!-- /shell -->
+
+<script>
+// ════════════════════════════
+// 데이터
+// ════════════════════════════
+const ERAS = [
+  {
+    id: 'y1', label: '1학년',
+    sh: { sub: '1학년 · 해솔고', tags: ['거만함','싸가지','마이웨이','뻔뻔함','포커페이스'] },
+    si: { sub: '1학년 · 해솔고', tags: ['차분한 사교가','호기심 많은','오컬트 마니아','장난을 잘 치는'] },
+    summary: '해람초·해람중을 거쳐 해솔고에서 처음으로 같은 반이 된 두 사람. 앞자리, 뒷자리가 되면서 첫 접점이 생긴다. 단 한번도 통하지 않는 수환의 농담과 한숨, 체육대회에서 잡힌 옷자락에 "그렇게 기분 나쁘단 뜻은 아니야"라는 말을 돌려준 날 — 아직 그게 무엇인지 모르지만 눈에 밟히기 시작한 시절.',
+    nodes: [
+      { id:'y1-n1', lbl:'입학',              hasEp:true,  eps:[0] },
+      { id:'y1-n2', lbl:'오후의 책갈피와 성경책', hasEp:true,  eps:[0] },
+      { id:'y1-n3', lbl:'봄',                hasEp:false, eps:[] },
+      { id:'y1-n4', lbl:'체육대회',           hasEp:true,  eps:[1] },
+    ]
+  },
+  {
+    id: 'y2', label: '2학년',
+    sh: { sub: '2학년 문과 2반 · 해솔고', tags: ['거만함','싸가지','마이웨이','뻔뻔함','포커페이스','문과','2반'] },
+    si: { sub: '2학년 이과 6반 · 해솔고', tags: ['차분한 사교가','호기심 많은','오컬트 마니아','장난을 잘 치는','이과','6반'] },
+    summary: '다른 반이 되었지만 묘하게 엮이는 날들이 늘어난다. 야자 땡땡이를 치고 오락실에 간 날, 스카치테이프로 손목을 묶어버린 날, 제주도로 향하는 첫 수학여행 — 두 사람 사이의 거리가 좁혀지는 것을 서로 모른 척한다.',
+    nodes: [
+      { id:'y2-n1', lbl:'땡땡이와 오락실',     hasEp:true,  eps:[2] },
+      { id:'y2-n2', lbl:'스카치테이프',        hasEp:true,  eps:[3] },
+      { id:'y2-n3', lbl:'제주도 수학여행',     hasEp:true,  eps:[4] },
+      { id:'y2-n4', lbl:'수학여행 에필로그',   hasEp:true,  eps:[5] },
+    ]
+  },
+  {
+    id: 'y3', label: '3학년',
+    sh: { sub: '3학년 · 해솔고', tags: ['재수','공학도','서울 이사'] },
+    si: { sub: '3학년 · 해솔고', tags: ['사범대 과학교육과','서울 자취'] },
+    summary: '졸업을 앞두고 더 이상 모른 척할 수 없게 된다. 3학년 겨울, 처음 같이 술을 마시게 된 날 결국 오래 참았던 말이 흘러나온다. 다음 날의 화해. 졸업식 날의 흰 장미 꽃다발, 첫 데이트, 그리고 각자의 길로 떠날 준비.',
+    nodes: [
+      { id:'y3-n1', lbl:'첫눈과 빨간노끈',        hasEp:true, eps:[6] },
+      { id:'y3-n2', lbl:'졸업식 전',              hasEp:true, eps:[6] },
+      { id:'y3-n3', lbl:'마지막 싸움과 화해',      hasEp:true, eps:[7] },
+      { id:'y3-n4', lbl:'짧지만 긴 이별 전의 대화', hasEp:true, eps:[7] },
+    ]
+  },
+  {
+    id: 'adult', label: '현재',
+    sh: { sub: '졸업 후 · 경기권 거주', tags: ['프리랜서 퀀트','동거중','경기권 거주'] },
+    si: { sub: '졸업 후 · 경기권 거주', tags: ['고등학교 물리 선생님','동거중','경기권 거주'] },
+    summary: '졸업식이 끝나고 두 사람은 각자의 일상으로 흩어졌다. 수환은 재수 끝에 카이스트(대전)로, 시몬은 서울 자취방으로. 버스로 10분 거리였던 학창시절은, 기차로 두 시간이 될 곳의 사이에서. 끝내 다시 만나 미래를 약속하고 함께 살아가기로 한다.',
+    nodes: [
+      { id:'ad-n1', lbl:'재수',      hasEp:false, eps:[] },
+      { id:'ad-n2', lbl:'카이스트',  hasEp:false, eps:[] },
+      { id:'ad-n3', lbl:'카투사',    hasEp:false, eps:[] },
+      { id:'ad-n4', lbl:'대학원',    hasEp:false, eps:[] },
+      { id:'ad-n5', lbl:'시몬 전역', hasEp:false, eps:[] },
+    ]
+  },
+];
+
+const EPS = [
+  { id:0, title:'오후의 책갈피와 성경책', grade:'1학년', g:'g1', size:'3,005자',  tags:['sh','si'], thumb:'tl-bg',
+    summary:'해람초·해람중. 9년을 지나 처음으로 같은 반. 수환의 책갈피가 떨어지며 시작된 첫 대화는 몇번의 탐색 끝에 "더 알고 싶다"는 말이 착지했다.' },
+  { id:1, title:'체육대회',             grade:'1학년', g:'g1', size:'1,683자',  tags:['sh','si'], thumb:'tl-bg',
+    summary:'시몬의 공이 수환의 머리에 맞았다. 수환은 똑같이 돌려줬다. 1반이 1등을 하며 터지는 함성, 잡힌 옷자락이 신경 쓰인다.' },
+  { id:2, title:'땡땡이와 오락실',       grade:'2학년', g:'g2', size:'12,932자', tags:['sh','si'], thumb:'ts-bg',
+    summary:'없는 단추를 핑계로 수환의 주머니를 뒤진 시몬. 〈열받게 하는 사람을 이기는 법〉, 땡땡이, 하우스 오브 더 데드, 오토바이 핸들 위의 손 — 먼저 손을 가져간 쪽은 수환이었다.' },
+  { id:3, title:'스카치테이프',          grade:'2학년', g:'g2', size:'27,365자', tags:['sh','si'], thumb:'tm-bg',
+    summary:'아무도 없는 자신의 집에 초대한 수환. 수환이 김밥을 말았다. 어머니가 불쑥 왔다가 웃으며 돌아갔다. 첫번째 다툼. 트럼프카드의 무수한 배열과 같이 새로운 역사를 쓴 하루. 수환이 처음으로 "시몬아"라고 불렀다.' },
+  { id:4, title:'제주도 수학여행',       grade:'2학년', g:'g2', size:'33,996자', tags:['sh','si'], thumb:'tl-bg',
+    summary:'같은 체크 남방, 승마 공원, 느린 우체통, 말 인형 열쇠고리와 나무 책갈피. 식어가는 컵라면을 둔 채 처음으로 서로의 속마음을 꺼낸다. 반쪽짜리 신화의 의미. 어두운 불빛 아래 처음으로 솔직해진 밤.' },
+  { id:5, title:'수학여행 에필로그',     grade:'2학년', g:'g2', size:'4,819자',  tags:['sh','si'], thumb:'ts-bg',
+    summary:'교실로 돌아왔다. 달라진 것과 달라지지 않은 것을 각자 정리하는 시간.' },
+  { id:6, title:'첫눈과 빨간노끈',      grade:'3학년', g:'g3', size:'17,152자', tags:['sh','si'], thumb:'ts-bg',
+    summary:'동아리실 빨간 노끈, 첫눈, 처음으로 안은 날. 졸업식 복도에서 마주친 눈빛. 끝이 다가온다는 걸 둘 다 알았다.' },
+  { id:7, title:'마지막 싸움과 화해',   grade:'3학년', g:'g3', size:'51,885자', tags:['sh','si'], thumb:'tl-bg',
+    summary:'소주 8병을 앞에 둔 채 당돌한 고백으로 인해 모든 게 어질러진다. 반쪽짜리 신화의 의미.' },
+];
+
+const ALBUM_DATA = {
+  y1:    [ {title:'교실 풍경', sub:'1학년 · 교실'}, {title:'체육대회', sub:'1학년 · 운동장'} ],
+  y2:    [ {title:'여름 교실', sub:'2학년 · 여름'}, {title:'제주 바다', sub:'2학년 · 수학여행'}, {title:'손목 장면', sub:'2학년 · 가을'} ],
+  y3:    [ {title:'졸업식 복도', sub:'3학년 · 졸업 전'}, {title:'고백 장면', sub:'3학년 · 졸업식'} ],
+  adult: [ {title:'현재 모습', sub:'성인 · 서울'} ],
+};
+
+const THUMB_COLORS = { 'tl-bg':'#EEF4FB','ts-bg':'#F5EFE8','tm-bg':'#EFEFEF' };
+
+// ════════════════════════════
+// 상태
+// ════════════════════════════
+let currentEra = null;
+let activeLeftNode = null;
+let activeRightNode = null;
+
+// ════════════════════════════
+// 페이지 전환
+// ════════════════════════════
+// 현재 활성 탭 추적
+// ════════════════════════════
+let currentPage = 'home';
+
+function SP(name) {
+  const isSamePage = currentPage === name;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const sidebarItem = document.querySelector(`.sidebar-item[data-tab="${name}"]`);
+  if (sidebarItem) sidebarItem.classList.add('active');
+  currentPage = name;
+
+  // ── 홈 이동 시 항상 초기화 ──
+  if (name === 'home') {
+    // pop 애니메이션 강제 제거
+    const wrap = document.querySelector('.active-card-wrap');
+    if (wrap) wrap.classList.remove('pop');
+    resetToDefault();
+  }
+
+  if (name === 'episodes') {
+    document.getElementById('ep-list-view').style.display = 'block';
+    document.getElementById('ep-read-view').style.display = 'none';
+    if (isSamePage) {
+      document.getElementById('ep-keyword-search').value = '';
+      currentEpGrade = 'all';
+      document.querySelectorAll('.ep-filter-chip').forEach(c => c.classList.remove('active'));
+      document.querySelector('.ep-filter-chip').classList.add('active');
+      document.getElementById('ep-overview-text').textContent = EP_OVERVIEW.all;
+      renderEpList('full-ep-list', EPS, 'episodes');
+    }
+  }
+
+  if (name === 'album' && isSamePage) {
+    document.getElementById('album-post-view').style.display = 'none';
+    document.getElementById('album-list-view').style.display = 'block';
+  }
+
+  if (name === 'profile' && isSamePage) {
+    const tabs = document.querySelectorAll('#profile-era-tabs-global .profile-era-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    tabs[0]?.classList.add('active');
+    switchProfileEraGlobal('y1', { target: tabs[0] });
+    if (profileGalleryMode.unified === 'grid') toggleProfileGallery('unified');
+    switchGalleryChar('sh');
+  }
+
+  window.scrollTo(0, 0);
+}
+
+// ════════════════════════════
+// 홈: cloudcash 스타일 카드 시스템 (큰 활성 + 작은 3개)
+// ════════════════════════════
+const ERA_THEME = {
+  y1:   { bg:'var(--y1-bg)',    color:'var(--y1)'    },
+  y2:   { bg:'var(--y2-bg)',    color:'var(--y2)'    },
+  y3:   { bg:'var(--y3-bg)',    color:'var(--y3)'    },
+  adult:{ bg:'var(--adult-bg)', color:'var(--adult)' },
+};
+let activeEraId = 'y1';
+let activeBackChar = 'sh'; // 뒷면 표시 캐릭터
+
+function buildActiveCardFront(era) {
+  // 앞면: 이미지 뷰 — 학년 배지(좌) + 카드뒤집기(우) + 큰 이미지 영역
+  const badgeLabels = { y1:'1학년', y2:'2학년', y3:'3학년', adult:'성인 프로필' };
+  return `
+    <div class="active-card-face" style="background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,0.07);padding:0;display:flex;flex-direction:column">
+      <!-- 상단: 학년 배지(좌) + 카드뒤집기(우) -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;flex-shrink:0">
+        <span class="mini-card-badge theme-${era.id}">${badgeLabels[era.id]}</span>
+        <div class="ac-flip-hint" onclick="event.stopPropagation();flipActiveCard()">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4 V3 A2 2 0 0 1 4 1 H7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M9 7 V8 A2 2 0 0 1 7 10 H4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M6.5 1 L7.5 1 L7.5 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M4.5 10 L3.5 10 L3.5 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+          카드뒤집기 ✦
+        </div>
+      </div>
+      <!-- 큰 이미지 영역 — 하단까지 꽉 채움 -->
+      <div style="flex:1;margin:10px 14px 14px;border-radius:14px;background:var(--bg);overflow:hidden;position:relative">
+        ${era.id === 'y3' ? `<img src="https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-main-card.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-faint)">이미지</div>`}
+      </div>
+    </div>`;
+}
+
+function buildActiveCardBack(era) {
+  const BACK_CHIPS = {
+    y1:  { sh:['ㅡㅡ^','거만함','싸가지','마이페이스'], si:['^^','차분한 사교가','호기심 많은','오컬트 마니아'] },
+    y2:  { sh:['ㅡㅡ^','거만함','싸가지','마이페이스'], si:['^^','차분한 사교가','호기심 많은','오컬트 마니아'] },
+    y3:  { sh:['ㅡㅡ^','거만함','싸가지','마이페이스'], si:['^^','차분한 사교가','호기심 많은','오컬트 마니아'] },
+    adult:{ sh:['ㅡㅡ^','거만함','싸가지','마이페이스'], si:['^^','차분한 사교가','호기심 많은','오컬트 마니아'] },
+  };
+  const chips = BACK_CHIPS[era.id] || BACK_CHIPS.adult;
+  return `
+    <div class="active-card-face active-card-back" style="background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,0.07);padding:0;display:flex;flex-direction:column;overflow:hidden">
+
+      <!-- 상단: 프로필확인(좌) + 카드뒤집기(우) -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;flex-shrink:0">
+        <span onclick="event.stopPropagation();warpToProfile('${era.id}')"
+          style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;background:#FFE5FA;color:#E82167;cursor:pointer;transition:all 0.15s">
+          프로필 확인
+        </span>
+        <div class="ac-flip-hint" onclick="event.stopPropagation();flipActiveCard()">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 4 V3 A2 2 0 0 1 4 1 H7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M9 7 V8 A2 2 0 0 1 7 10 H4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M6.5 1 L7.5 1 L7.5 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M4.5 10 L3.5 10 L3.5 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+          카드뒤집기 ✦
+        </div>
+      </div>
+
+      <!-- 중간: 원형+이름+칩스 -->
+      <div style="display:flex;align-items:flex-start;justify-content:center;padding:12px 16px 14px;flex:1;min-height:0;overflow:hidden;gap:12px">
+
+        <!-- 정수환 -->
+        <div style="display:flex;flex-direction:column;flex:1;min-width:0;align-items:center;gap:12px;height:100%">
+          <div style="width:clamp(72px,48%,120px);aspect-ratio:1;background:var(--sh-bg);border-radius:50%;overflow:hidden;flex-shrink:0">
+            ${{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-sh-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-sh-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-sh-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-sh-profile.png'}[era.id] ? `<img src="${{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-sh-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-sh-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-sh-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-sh-profile.png'}[era.id]}" style="width:100%;height:100%;object-fit:cover">` : ''}
+          </div>
+          <div style="font-size:20px;font-weight:600;color:var(--text)">정수환</div>
+          <div class="back-chips-wrap" style="flex:1;width:100%;background:#F4F5F7;border-radius:12px;padding:8px 6px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-content:flex-start">
+            ${chips.sh.map(t=>`<span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--sh);color:#fff;white-space:nowrap">${t}</span>`).join('')}
+          </div>
+        </div>
+
+        <!-- X 기호 -->
+        <div style="font-size:13px;font-weight:700;color:var(--border-strong);flex-shrink:0;padding-top:clamp(28px,18%,50px)">×</div>
+
+        <!-- 최시몬 -->
+        <div style="display:flex;flex-direction:column;flex:1;min-width:0;align-items:center;gap:12px;height:100%">
+          <div style="width:clamp(72px,48%,120px);aspect-ratio:1;background:var(--si-bg);border-radius:50%;overflow:hidden;flex-shrink:0">
+            ${{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-si-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-si-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-si-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-si-profile.png'}[era.id] ? `<img src="${{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-si-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-si-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-si-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-si-profile.png'}[era.id]}" style="width:100%;height:100%;object-fit:cover">` : ''}
+          </div>
+          <div style="font-size:20px;font-weight:600;color:var(--text)">최시몬</div>
+          <div class="back-chips-wrap" style="flex:1;width:100%;background:#F4F5F7;border-radius:12px;padding:8px 6px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-content:flex-start">
+            ${chips.si.map(t=>`<span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--si);color:#fff;white-space:nowrap">${t}</span>`).join('')}
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+}
+function setBackChar(c) {
+  activeBackChar = c;
+  renderActiveCard();
+}
+
+// 학년별 에피소드 목록을 home 하단에 렌더
+const EPS_BY_ERA = { y1:'1학년', y2:'2학년', y3:'3학년', adult:null };
+function buildHomeEpList(eraId) {
+  const gradeLabel = EPS_BY_ERA[eraId];
+  const filtered = gradeLabel ? EPS.filter(e => e.grade === gradeLabel) : [];
+  const era = ERAS.find(e => e.id === eraId);
+  document.getElementById('home-ep-title').textContent = '에피소드';
+  document.getElementById('home-ep-sub').textContent = era ? era.label : '';
+  const listEl = document.getElementById('home-ep-list');
+  if (!listEl) return;
+  if (filtered.length === 0) {
+    listEl.innerHTML = '<div style="font-size:13px;color:var(--text-faint);padding:12px 0">에피소드가 없습니다.</div>';
+    return;
+  }
+  listEl.innerHTML = filtered.map(ep => `
+    <div class="ep-item ${ep.g}" onclick="openRead(${ep.id},'home')" style="cursor:pointer">
+      <span class="ep-grade ${ep.g}">${ep.grade}</span>
+      <div class="ep-item-body">
+        <div class="ep-item-row">
+          <span class="ep-title">${ep.title}</span>
+          <span class="ep-size">${ep.size}</span>
+          <span class="ep-arrow">→</span>
+        </div>
+        <div class="ep-summary">${ep.summary || ''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderActiveCard(animate) {
+  const era = ERAS.find(e => e.id === activeEraId);
+  const card = document.getElementById('active-card');
+  const theme = ERA_THEME[era.id] || ERA_THEME.adult;
+  document.documentElement.style.setProperty('--era-bg',    theme.bg);
+  document.documentElement.style.setProperty('--era-color', theme.color);
+  card.classList.remove('flipped');
+  card.innerHTML = buildActiveCardFront(era) + buildActiveCardBack(era);
+  if (animate) {
+    const wrap = card.closest('.active-card-wrap');
+    if (wrap) {
+      wrap.classList.remove('pop');
+      void wrap.offsetWidth;
+      wrap.classList.add('pop');
+    }
+  }
+}
+
+function flipActiveCard() {
+  const card = document.getElementById('active-card');
+  const isFlipping = !card.classList.contains('flipped');
+  if (isFlipping) {
+    card.classList.add('flipped');
+    setTimeout(checkBackChipsVisibility, 750);
+  } else {
+    card.classList.remove('flipped');
+  }
+}
+
+// 카드 높이가 충분하지 않으면 칩스 박스 숨김
+// 이미지 영역이 최소 80px 이상이어야 칩스 표시
+function checkBackChipsVisibility() {
+  const card = document.getElementById('active-card');
+  if (!card) return;
+  const chipsWraps = card.querySelectorAll('.back-chips-wrap');
+  if (!chipsWraps.length) return;
+  const cardH = card.offsetHeight;
+  const show = cardH >= 220;
+  chipsWraps.forEach(el => {
+    if (!show) { el.style.display = 'none'; return; }
+    el.style.display = 'flex';
+    // 줄 수 체크 — 칩스가 3줄 이상이면 숨김
+    const spans = el.querySelectorAll('span');
+    if (!spans.length) return;
+    let rows = 1;
+    let lastTop = spans[0].getBoundingClientRect().top;
+    for (let i = 1; i < spans.length; i++) {
+      const top = spans[i].getBoundingClientRect().top;
+      if (top > lastTop + 2) { rows++; lastTop = top; }
+    }
+    el.style.display = rows >= 3 ? 'none' : 'flex';
+  });
+}
+
+function buildMiniCards() {
+  const grid = document.getElementById('mini-cards-grid');
+  // 선택된 학년 제외, 나머지 3개만 표시
+  const others = ERAS.filter(e => e.id !== activeEraId);
+  grid.innerHTML = others.map(era => `
+    <div class="mini-card" onclick="swapActiveEra('${era.id}')">
+      <div class="mini-card-badge theme-${era.id}">${era.label}</div>
+      <div class="mini-card-img">이미지</div>
+    </div>
+  `).join('');
+}
+
+function buildActiveStats() {
+  const era = ERAS.find(e => e.id === activeEraId);
+  const st = ERA_STATS[era.id];
+  const fullChars = { y1:'4,688자', y2:'79,112자', y3:'69,037자', adult:'진행 중' }[era.id];
+  document.getElementById('active-stats').innerHTML = `
+    <div class="active-stat-item">
+      <div class="active-stat-num">${st.eps}</div>
+      <div class="active-stat-lbl">에피소드</div>
+    </div>
+    <div class="active-stat-item">
+      <div class="active-stat-num green">${st.nodes}</div>
+      <div class="active-stat-lbl">로그</div>
+    </div>
+    <div class="active-stat-item">
+      <div class="active-stat-num">${fullChars}</div>
+      <div class="active-stat-lbl">분량</div>
+    </div>`;
+}
+
+function buildBigTimeline() {
+  const ERA_DOT_COLOR = { y1:'#F6C800', y2:'#2BC8BF', y3:'#4A81FF', adult:'#995FFF' };
+  document.documentElement.style.setProperty('--tl-active-color', ERA_DOT_COLOR[activeEraId] || '#E82167');
+
+  // nodes: bubble.top=위말풍선(수환), bubble.bot=아래말풍선(시몬)
+  // isHeart: 3학년(y3), 성인(adult) 노드
+  const nodes = [
+    { lbl:'책갈피',          sub:'1학년, 봄 앞뒷자리',  eraId:'y1',    hasEp:true,  isHeart:false,
+      bubble:{ top:'책갈피 좀 주워줘',      bot:'미안~ 실수였어' } },
+    { lbl:'땡땡이와 오락실',  sub:'2학년, 여름',         eraId:'y2',    hasEp:true,  isHeart:false,
+      bubble:{ top:'너에 대해 알고싶어',    bot:'' } },
+    { lbl:'김밥',            sub:'2학년, 여름',           eraId:'y2',    hasEp:true,  isHeart:false,
+      bubble:{ top:'',                      bot:'조금.. 귀찮다' } },
+    { lbl:'수학여행',        sub:'2학년, 9월',             eraId:'y2',    hasEp:true,  isHeart:false,
+      bubble:{ top:'너랑 제일 친하고싶어',  bot:'' } },
+    { lbl:'빨간노끈',        sub:'3학년, 겨울',            eraId:'y3',    hasEp:true,  isHeart:true,
+      bubble:{ top:'선생님 같아',           bot:'' } },
+    { lbl:'마지막 싸움',     sub:'3학년, 졸업식 전',       eraId:'y3',    hasEp:true,  isHeart:true,
+      bubble:{ top:'',                      bot:'네가 내 첫사랑이야' } },
+    { lbl:'졸업식',          sub:'3학년, 짧은 이별',       eraId:'y3',    hasEp:true,  isHeart:true,
+      bubble:{ top:'나만 보고싶어',         bot:'' } },
+    { lbl:'함께',            sub:'현재 · 33살, 동거',      eraId:'adult', hasEp:false, isHeart:true,
+      bubble:{ top:'',                      bot:'서울' } },
+  ];
+
+  const track = document.getElementById('big-tl-track');
+  // 선(line) 엘리먼트 + 노드들 렌더
+  const heartSvg = (color) =>
+    `<svg viewBox="0 0 12 11" fill="${color}" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 10.5C6 10.5 0.5 6.8 0.5 3.5C0.5 1.85 1.85 0.5 3.5 0.5C4.45 0.5 5.3 0.95 6 1.7C6.7 0.95 7.55 0.5 8.5 0.5C10.15 0.5 11.5 1.85 11.5 3.5C11.5 6.8 6 10.5 6 10.5Z"/>
+    </svg>`;
+
+  track.innerHTML = '<div class="big-tl-line" id="big-tl-line"></div>' +
+    nodes.map((n, idx) => {
+      const isCurrent = n.eraId === activeEraId;
+      const activeColor = ERA_DOT_COLOR[activeEraId] || '#E82167';
+      const dotColor = isCurrent ? activeColor : '#D1D5DB';
+      const cls = [
+        'big-tl-node',
+        n.hasEp   ? 'has-ep'     : '',
+        isCurrent ? 'is-current' : '',
+      ].filter(Boolean).join(' ');
+      const dot = n.isHeart
+        ? `<div class="big-tl-dot heart">${heartSvg(dotColor)}</div>`
+        : `<div class="big-tl-dot"></div>`;
+      // 선택된 노드: top·bot 모두 렌더
+      let bubbles = '';
+      if (isCurrent) {
+        if (n.bubble.top) bubbles += `<div class="big-tl-bubble top">${n.bubble.top}</div>`;
+        if (n.bubble.bot) bubbles += `<div class="big-tl-bubble bot">${n.bubble.bot}</div>`;
+      }
+      return `
+        <div class="${cls}" onclick="swapActiveEra('${n.eraId}')">
+          ${bubbles}
+          ${dot}
+          <div class="big-tl-lbl">${n.lbl}</div>
+          <div class="big-tl-sub">${n.sub}</div>
+        </div>`;
+    }).join('');
+
+  // 선 + 말풍선: dot 크기 항상 10px 고정이므로 offset 기반으로 단순 계산
+  requestAnimationFrame(() => {
+    const nodeEls = track.querySelectorAll('.big-tl-node');
+    const line    = document.getElementById('big-tl-line');
+    if (!nodeEls.length || !line) return;
+    const trackRect  = track.getBoundingClientRect();
+    const firstDotEl = nodeEls[0].querySelector('.big-tl-dot');
+    const lastDotEl  = nodeEls[nodeEls.length-1].querySelector('.big-tl-dot');
+
+    // 세로: offsetTop 기반 — scale() 완전 무관
+    const lineTop   = nodeEls[0].offsetTop + firstDotEl.offsetTop + 5 - 1;
+    // 가로: getBoundingClientRect left (x축은 scale 영향 없음)
+    const firstDotR = firstDotEl.getBoundingClientRect();
+    const lastDotR  = lastDotEl.getBoundingClientRect();
+    const lineLeft  = firstDotR.left - trackRect.left + 5;
+    const lineWidth = (lastDotR.left + 5) - (firstDotR.left + 5);
+    line.style.top   = lineTop  + 'px';
+    line.style.left  = lineLeft + 'px';
+    line.style.right = 'auto';
+    line.style.width = lineWidth + 'px';
+
+    // 말풍선: dot 중심 = offsetTop + 5 (항상 고정)
+    nodeEls.forEach(nodeEl => {
+      const topBubble = nodeEl.querySelector('.big-tl-bubble.top');
+      const botBubble = nodeEl.querySelector('.big-tl-bubble.bot');
+      if (!topBubble && !botBubble) return;
+      const dot = nodeEl.querySelector('.big-tl-dot');
+      const dotCenterY = dot.offsetTop + 5; // 항상 10px/2 = 5
+
+      if (topBubble) {
+        const bh = topBubble.offsetHeight || 22;
+        const topPos = dotCenterY - 10 - bh;
+        topBubble.style.top    = topPos + 'px';
+        topBubble.style.bottom = 'auto';
+        // 잘리지 않도록 노드 상단 padding 보정
+        if (topPos < 0) {
+          nodeEl.style.paddingTop = (parseInt(nodeEl.style.paddingTop || 18) + Math.abs(topPos) + 4) + 'px';
+        }
+      }
+      if (botBubble) {
+        const lbl = nodeEl.querySelector('.big-tl-lbl');
+        const sub = nodeEl.querySelector('.big-tl-sub');
+        const refEl = sub || lbl;
+        if (refEl) {
+          botBubble.style.top = (refEl.offsetTop + refEl.offsetHeight + 8) + 'px';
+        } else {
+          botBubble.style.top = (dotCenterY + 28) + 'px';
+        }
+        botBubble.style.bottom = 'auto';
+      }
+    });
+
+    // 그라데이션: 좌우 스크롤 위치에 따라 fade-left / fade-right 토글
+    const outer = track.closest('.big-tl-outer');
+    if (outer) {
+      const updateFade = () => {
+        const scrollLeft = track.scrollLeft;
+        const maxScroll  = track.scrollWidth - track.clientWidth;
+        outer.classList.toggle('fade-left',  scrollLeft > 2);
+        outer.classList.toggle('fade-right', maxScroll > 2 && scrollLeft < maxScroll - 2);
+      };
+      updateFade();
+      track.addEventListener('scroll', updateFade, { passive: true });
+    }
+  });
+}
+
+function swapActiveEra(eraId) {
+  if (eraId === activeEraId) return;
+  activeEraId = eraId;
+  activeBackChar = 'sh'; // 뒷면 캐릭터 초기화
+  // 카드가 뒤집힌 상태면 다시 앞으로
+  document.getElementById('active-card').classList.remove('flipped');
+  renderActiveCard(true); // 미니카드 클릭 시에만 팝 애니메이션
+  buildMiniCards();
+  buildActiveStats();
+  buildBigTimeline();
+  // 서사요약 + 에피소드 목록 갱신
+  const era = ERAS.find(e => e.id === eraId);
+  document.getElementById('home-summary-text').textContent = era.summary;
+  document.getElementById('home-summary-sub').textContent = era.label + ' 흐름';
+  document.getElementById('big-tl-context').textContent = era.label + ' 기준';
+  buildHomeEpList(eraId);
+}
+
+// 호환용 stub (기존 코드 흔적)
+function buildEraGrid(){ /* deprecated — replaced by renderActiveCard + buildMiniCards */ }
+function selectEra(era){ swapActiveEra(era.id); }
+function resetToDefault(){
+  activeEraId = 'y1';
+  activeBackChar = 'sh';
+  document.getElementById('active-card').classList.remove('flipped');
+  renderActiveCard();
+  buildMiniCards();
+  buildActiveStats();
+  buildBigTimeline();
+  document.getElementById('home-summary-text').textContent = '해람초·해람중 9년을 한 번도 같은 반이 되지 않은 두 사람이, 해솔고 1학년에서 처음으로 짝꿍이 된다. 수환의 냉정한 말투와 시몬의 흘려버리는 여유가 충돌하고 스치며, 2학년의 단추·김밥·손목 묶기·제주를 거쳐 서로를 점점 더 선명하게 의식하게 된다. 3학년 동아리실 첫눈 이후, 졸업식 전날 밤 소주 8병 자리에서 오래 참았던 말들이 흘러나온다.';
+  document.getElementById('home-summary-sub').textContent = '전체 흐름';
+  buildHomeEpList('y1');
+}
+
+// ════════════════════════════
+// 타임라인 더미 데이터
+// ════════════════════════════
+const TL_ALL = [
+  { lbl:'1학년', sub:'2013–14', filled:true  },
+  { lbl:'2학년', sub:'2014–15', filled:true  },
+  { lbl:'3학년', sub:'2015–16', filled:true  },
+  { lbl:'재수',  sub:'2016–17', filled:false },
+  { lbl:'대학',  sub:'2017–',   filled:false },
+  { lbl:'카투사',sub:'2018–',   filled:false },
+  { lbl:'전역',  sub:'2020–',   filled:false },
+  { lbl:'현재',  sub:'33세',    filled:false },
+];
+const TL_ERA = {
+  y1:    [ { lbl:'입학', sub:'3월', filled:true }, { lbl:'봄', sub:'4–5월', filled:false }, { lbl:'체육대회', sub:'5월', filled:true }, { lbl:'여름', sub:'7–8월', filled:false } ],
+  y2:    [ { lbl:'봄', sub:'3–4월', filled:false }, { lbl:'여름', sub:'7월', filled:true }, { lbl:'수학여행', sub:'9월', filled:true }, { lbl:'이후', sub:'10–12월', filled:false } ],
+  y3:    [ { lbl:'봄', sub:'3–4월', filled:false }, { lbl:'졸업식 전', sub:'12월', filled:true }, { lbl:'고백', sub:'졸업식', filled:true } ],
+  adult: [ { lbl:'재수', sub:'2016', filled:false }, { lbl:'카이스트', sub:'2017', filled:false }, { lbl:'카투사', sub:'2018', filled:false }, { lbl:'전역', sub:'2020', filled:false }, { lbl:'현재', sub:'33세', filled:false } ],
+};
+
+// ════════════════════════════
+// 더미 통계 데이터
+// ════════════════════════════
+const ERA_STATS = {
+  y1:    { eps:'2', nodes:'6',  chars:'4,688자' },
+  y2:    { eps:'4', nodes:'14', chars:'79,112자' },
+  y3:    { eps:'2', nodes:'7',  chars:'69,037자' },
+  adult: { eps:'0', nodes:'3',  chars:'—' },
+};
+
+// ════════════════════════════
+// 타임라인 렌더
+// ════════════════════════════
+function buildMiniTL(nodes) {
+  const track = document.getElementById('tl-mini-track');
+  if (!track) return; // 홈에서 제거되었음
+  track.innerHTML = '';
+  nodes.forEach(nd => {
+    const el = document.createElement('div');
+    el.className = 'tl-mini-node';
+    el.innerHTML = `
+      <div class="tl-mini-dot ${nd.filled ? 'colored' : 'filled'}"></div>
+      <div class="tl-mini-lbl">${nd.lbl}</div>
+      <div class="tl-mini-sub">${nd.sub}</div>`;
+    track.appendChild(el);
+  });
+}
+
+
+// ════════════════════════════
+// 열람 — 항상 에피소드 탭 내부
+// ════════════════════════════
+let readFrom = 'home';
+
+function openRead(epId, from) {
+  const ep = EPS[epId];
+  readFrom = from || 'home';
+  document.getElementById('ep-read-title').textContent = ep.title;
+  document.getElementById('ep-read-meta').textContent = ep.grade + ' · ' + ep.size;
+  // 서사요약 주입
+  const sumEl = document.getElementById('ep-read-summary-text');
+  if (sumEl) sumEl.textContent = ep.summary || '';
+  // 검색 초기화
+  const srch = document.getElementById('ep-read-search');
+  if (srch) srch.value = '';
+  // 대화 목록 초기화 (hidden 해제)
+  document.querySelectorAll('#ep-read-dlg .dt').forEach(d => d.classList.remove('hidden'));
+
+  // ── 이전글 / 다음글 네비게이터 ──
+  const prevEp = epId > 0 ? EPS[epId - 1] : null;
+  const nextEp = epId < EPS.length - 1 ? EPS[epId + 1] : null;
+  const prevEl = document.getElementById('ep-nav-prev');
+  const nextEl = document.getElementById('ep-nav-next');
+  const prevTitle = document.getElementById('ep-nav-prev-title');
+  const nextTitle = document.getElementById('ep-nav-next-title');
+  if (prevEp) {
+    prevTitle.textContent = prevEp.title;
+    prevEl.onclick = () => openRead(prevEp.id, from);
+    prevEl.style.visibility = 'visible';
+  } else {
+    prevTitle.textContent = '';
+    prevEl.onclick = null;
+    prevEl.style.visibility = 'hidden';
+  }
+  if (nextEp) {
+    nextTitle.textContent = nextEp.title;
+    nextEl.onclick = () => openRead(nextEp.id, from);
+    nextEl.style.visibility = 'visible';
+  } else {
+    nextTitle.textContent = '';
+    nextEl.onclick = null;
+    nextEl.style.visibility = 'hidden';
+  }
+
+  SP('episodes');
+  document.getElementById('ep-list-view').style.display = 'none';
+  document.getElementById('ep-read-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function filterReadLines(q) {
+  document.querySelectorAll('#ep-read-dlg .dt').forEach(dt => {
+    if (!q.trim()) { dt.classList.remove('hidden'); return; }
+    const txt = dt.querySelector('.sl')?.textContent + dt.querySelector('.db')?.textContent;
+    dt.classList.toggle('hidden', !txt.includes(q));
+  });
+}
+
+function closeEpRead() {
+  document.getElementById('ep-read-view').style.display = 'none';
+  document.getElementById('ep-list-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// ════════════════════════════
+// 에피소드 학년 필터 + 검색
+// ════════════════════════════
+let currentEpGrade = 'all';
+const GRADE_MAP = { y1:'1학년', y2:'2학년', y3:'3학년' };
+
+function filterEpsByKeyword(q) {
+  applyEpFilter(q);
+}
+
+function applyEpFilter(keyword) {
+  const q = keyword !== undefined ? keyword : document.getElementById('ep-keyword-search').value;
+  let filtered = EPS;
+  if (currentEpGrade !== 'all') {
+    const gradeLabel = GRADE_MAP[currentEpGrade];
+    filtered = filtered.filter(e => e.grade === gradeLabel);
+  }
+  if (q && q.trim()) {
+    filtered = filtered.filter(e => e.title.includes(q) || e.grade.includes(q));
+  }
+  renderEpList('full-ep-list', filtered, 'episodes');
+}
+
+// ════════════════════════════
+// 홈 프로필 카드 더미 데이터
+// ════════════════════════════
+const HOME_PROFILE = {
+  y1: {
+    sh: { age:'16세 (1학년)', birthday:'1997.02.01', height:'184cm', mbti:'INTJ', family:'외동 · 부모님', personality:'냉정하고 직설적, 감정 표현이 거의 없다. 자기 페이스를 지키는 것이 핵심 동기. 시몬 앞에서만 미세하게 흔들리기 시작.', keywords:['냉정함','직설적','이과 성향','책벌레','싸가지 없는 듯한 말투'] },
+    si: { age:'16세 (1학년)', birthday:'1997.03.27', height:'181cm', mbti:'ENFP', family:'부모·여동생 한나', personality:'사교적이고 장난기 많음. 분위기 메이커. 수환의 냉소가 흘러내리는 걸 이상하게 즐기기 시작.', keywords:['사교적','장난기','분위기 메이커','눈치 빠름','초콜릿폰'] },
+  },
+  y2: {
+    sh: { age:'17세 (2학년)', birthday:'1997.02.01', height:'184cm', mbti:'INTJ', family:'외동 · 부모님', personality:'문과 2반. 더 깊어진 냉정함, OO학원·도서관 야자. 시몬과 엮이는 횟수가 늘자 미묘하게 흔들린다.', keywords:['문과 2반','책벌레','OO학원','과목장','요리 잘함'] },
+    si: { age:'17세 (2학년)', birthday:'1997.03.27', height:'181cm', mbti:'ENFP', family:'부모·여동생 한나', personality:'이과 6반, 영화제작부 활동. 무드메이커 역할이 굳어졌다. 수환과 점점 엮이는 상황에 혼란스럽다.', keywords:['이과 6반','영화제작부','OO학원','무드메이커','초콜릿폰'] },
+  },
+  y3: {
+    sh: { age:'18세 (3학년)', birthday:'1997.02.01', height:'184cm', mbti:'INTJ', family:'외동 · 부모님', personality:'재수를 결심한 수험생. 감정이 표면으로 올라오는 시기. 소주 8병 이후 마침내 말이 나왔다.', keywords:['재수 결심','카이스트 목표','TOEIC 준비','첫 생일 목도리'] },
+    si: { age:'18세 (3학년)', birthday:'1997.03.27', height:'181cm', mbti:'ENFP', family:'부모·여동생 한나', personality:'과학교육과(사범대) 수시 합격. 졸업 준비 중. 수환에 대한 감정을 더 이상 모른 척하기 어렵다.', keywords:['과학교육과 수시 합격','졸업 준비','서울 자취 예정','카시오 손목시계'] },
+  },
+  adult: {
+    sh: { age:'19-20세 (재수~입학)', birthday:'1997.02.01', height:'184cm', mbti:'INTJ', family:'서울 ㅇㅇ구 XX동 · 부모님과 거주', personality:'재수 끝에 카이스트 산업및시스템공학과 정시 합격. 장학금+기숙사(대전). 카투사 준비 중.', keywords:['카이스트 산업시스템공학','대전 기숙사','카투사 준비','서울↔대전'] },
+    si: { age:'19세 (입학 후)', birthday:'1997.03.27', height:'181cm', mbti:'ENFP', family:'서울 자취방 (기숙사 탈락)', personality:'과학교육과 입학. 자취방은 작고 소박하다. 버스로 10분 거리에 수환의 서울 집이 있다.', keywords:['과학교육과','서울 자취방','군 입대 예정','버스 10분 거리'] },
+  },
+};
+
+let homeProfileEra = 'y1'; // 현재 홈 프로필이 보여주는 학년
+
+function renderHomeProfileCards(eraId) {
+  homeProfileEra = eraId;
+  const d = HOME_PROFILE[eraId];
+  if (!d) return;
+  document.getElementById('home-profile-label').textContent = ERAS.find(e=>e.id===eraId)?.label + ' 프로필';
+
+  const makeCard = (char, info, name, en, avatarBg, avatarColor) => `
+    <div style="background:#fff;border:0.5px solid #E0DED8;border-radius:12px;padding:1.25rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${avatarColor}"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:${avatarBg};color:${avatarColor};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;flex-shrink:0">${name[0]}</div>
+        <div>
+          <div style="font-size:15px;font-weight:500">${name}</div>
+          <div style="font-size:11px;color:#aaa">${en}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+        <div style="background:#F7F6F3;border-radius:8px;padding:8px 10px">
+          <div style="font-size:10px;color:#aaa;margin-bottom:2px">나이</div>
+          <div style="font-size:13px;font-weight:500">${info.age}</div>
+        </div>
+        <div style="background:#F7F6F3;border-radius:8px;padding:8px 10px">
+          <div style="font-size:10px;color:#aaa;margin-bottom:2px">키</div>
+          <div style="font-size:13px;font-weight:500">${info.height}</div>
+        </div>
+        <div style="background:#F7F6F3;border-radius:8px;padding:8px 10px;grid-column:1/-1">
+          <div style="font-size:10px;color:#aaa;margin-bottom:2px">MBTI</div>
+          <div style="font-size:13px;font-weight:500">${info.mbti}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        ${info.keywords.map(k=>`<span class="tag">${k}</span>`).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('home-profile-cards').innerHTML =
+    makeCard('sh', d.sh, '정수환', 'Jeong Suhwan', '#F0E8DF', '#7B5B3A') +
+    makeCard('si', d.si, '최시몬', 'Choi Simon',   '#E8E8E8', '#4A4A4A');
+
+  document.getElementById('home-profile-section').style.display = 'block';
+}
+
+function warpToProfile(targetEra) {
+  // 인자가 있으면 그 학년, 없으면 currentEra → 그 다음 homeProfileEra 순으로
+  const era = targetEra || (currentEra && currentEra.id) || homeProfileEra;
+  SP('profile');
+  const eraIdx = { y1:0, y2:1, y3:2, adult:3 };
+  const idx = eraIdx[era] ?? 0;
+  const tabs = document.querySelectorAll('#profile-era-tabs-global .profile-era-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  tabs[idx]?.classList.add('active');
+  switchProfileEraGlobal(era, { target: tabs[idx] });
+}
+
+// ════════════════════════════
+// 프로필 학년별 콘텐츠 업데이트 — 열 기반
+// ════════════════════════════
+const PROFILE_FULL_DATA = {
+  sh: {
+    name:'정수환', en:'Jeong Suhwan',
+    avatarBg:'#F0E8DF', avatarColor:'#7B5B3A', avatarChar:'정',
+    eras: {
+      y1: {
+        metaTags:['177cm','1학년','같은반'],
+        info:{ age:'17세', birthday:'1994.02.01', height:'177cm', mbti:'—', school:'1학년 1반 / 뒷자리', family:'부모님' },
+        look:'평균 체형. 최시몬보다 살짝 어두운 피부톤. 단정한 교복, 표정변화가 드물다. 어두운 올리브빛 갈색 머리가 이마를 스친다. 포커페이스.',
+        personality:'자기 페이스를 지키는 것이 핵심 동기. 냉정하고 남을 곤란하게 만들기 좋아한다. 불필요한 대화를 피한다. 시몬의 여유가 자신의 예상과 다르게 흘러내리는 걸 이상하게 오래 생각한다.',
+        note:'수업 시간 외엔 거의 항상 이어폰을 끼고 다닌다(mp3 겸 전자사전). 성적 우수, 타고난 두뇌. 큰 개를 좋아하며 장래희망은 수의사. 윤해동 창포동 인근 연립주택 거주, 해람초·중 출신. 형편이 넉넉하지 않다. 영어·수학 학원을 다닌다.\nL: 클래식, 조용함, 개, 독서  /  H: 시끄러움, 경박함',
+        tags:['거만함','싸가지','마이웨이','뻔뻔함','포커페이스'],
+      },
+      y2: {
+        metaTags:['183cm','문과','2반'],
+        info:{ age:'18세', birthday:'1994.02.01', height:'183cm', mbti:'—', school:'2학년 문과 2반', family:'부모님' },
+        look:'단정한 교복, 표정변화가 드물다. 어두운 올리브빛 갈색 머리가 이마를 스친다. 안테나 한 가닥이 솟는다. 시원한 여름하복. 최시몬이 자리를 박차고 나가려 했던 날, 표정이 처음으로 흔들렸다.',
+        personality:'냉정함. 자기 페이스를 지키는 것이 핵심 동기. 남을 곤란하게 만들기 좋아한다. 불필요한 대화를 피한다. 요리를 잘하고 퍼즐·게임 실력도 좋다. 시몬과 접점이 늘자 미묘하게 페이스가 흔들린다. 최시몬 앞에서 화가 잘 난다.',
+        note:'책 읽기·공부가 기본 상태(때·장소 안 가림). 항상 다양한 분야의 책을 읽는다. 대부분 이어폰을 끼고 있다. 성적 우수, 기억력이 좋다. 동물을 좋아한다. 윤해동 창포동 인근 연립주택 거주, 화목한 가정. 영어학원만 다닌다(언어·수학 두뇌 우수).\nL: 클래식, 조용함, 개, 독서, 과학/수학  /  H: 시끄러움, 경박함',
+        tags:['거만함','싸가지','마이웨이','뻔뻔함','포커페이스'],
+      },
+      y3: {
+        metaTags:['184cm','이과','7반'],
+        info:{ age:'19세', birthday:'1994.02.01', height:'184cm', mbti:'ISTJ', school:'3학년 7반 / 공대 지망' },
+        look:'단정한 교복, 표정변화가 드물다. 어두운 올리브빛 갈색 머리가 이마를 스친다. 이 시기의 수환은 표정이 조금 달라진다.',
+        personality:'주변 평가에 흔들리지 않으며 들은 말은 전부 기억한다. 자신에게 불리한 말은 선택적으로 무시한다. 예의 있는 듯 없는 듯 애매한 선에서 상대를 긁는다. 농담과 거짓말에 능숙하여 어디까지가 진심인지 파악하기 어렵다. 기본적으로 모두에게 호의적이며 차가운 태도이지만 남의 진심을 비웃지 않는다. 겉으로는 딴짓하는 것 같지만 내용은 전부 파악하고 있다. 뻔뻔하게 상황을 넘기는 능력이 탁월하다.',
+        note:'아버지의 서울 본사 승진 발령으로 졸업 후 가족 전체 서울 이주 예정. 화목한 가정 분위기는 그대로. 문과 선택은 순수한 지적 호기심이었으나 3학년 때 카이스트 산업및시스템공학과를 목표로 이과 전환. 과탐 준비 부족을 이유로 2학기 중반 재수 결심. 아버지의 서울 발령 시기와 맞물려 서울에서 재수, 정시 합격. 장학금·기숙사 지원(대전 생활 예정).\nL: 클래식, 조용함, 개, 독서, 과학/수학  /  H: 시끄러움, 경박함',
+        tags:['거만함','싸가지','마이웨이','뻔뻔함','포커페이스','목도리'],
+      },
+      adult: {
+        metaTags:['184cm','프리랜서 퀀트','동거'],
+        info:{ age:'33세', birthday:'1994.02.01', height:'184cm', mbti:'ISTJ', school:'카이스트 산업및시스템공학과 졸업 / 프리랜서 퀀트' },
+        look:'학생 때보다 조금 단단해진 인상.',
+        personality:'변함없다. 시몬과 함께 있을 때는 티나게 부드러워진다. 잦은 다툼은 여전하다.',
+        note:'',
+        tags:['거만함','싸가지','마이웨이','뻔뻔함','포커페이스'],
+      },
+    }
+  },
+  si: {
+    name:'최시몬', en:'Choi Simon',
+    avatarBg:'#E8E8E8', avatarColor:'#4A4A4A', avatarChar:'최',
+    eras: {
+      y1: {
+        metaTags:['178cm','1학년','같은반'],
+        info:{ age:'17세', birthday:'1994.03.27', height:'178cm', mbti:'—', school:'1학년 1반 / 앞자리', family:'부모님, 여동생(최한나)' },
+        look:'차분하고 신비스런 분위기. 교복 넥타이를 느슨하게 맨다. 눈 아래 눈물점. 머리카락이 살짝 곱슬거리며 이마 위에 안테나 가닥이 솟는다.',
+        personality:'사교적이지만 나서지 않는다. 장난기 많음. 분위기 메이커. 수환의 냉소가 자신한테는 흘러내린다는 걸 알면서도 일부러 더 걸어 붙인다. 좋아하는 것은 괴담.',
+        note:'윤해동 파란 지붕 집 거주, 해람초·중 출신. 부모님이 교회를 다녀 일요일엔 함께 나갔다. 이름의 유래는 성경의 시몬. 인터넷으로 오컬트 글을 즐겨 본다(귀신을 직접 보고 싶다는 뜻은 아님). 손발이 차고 추위를 잘 타지만 감기는 별로 안 걸린다. 비 오는 날·운동 싫어함, 체력이 형편없다. 겨울보다 여름이 좋다. 초콜릿폰(블랙) 사용, 전자사전에 공포영화를 담아 다닌다. 성적 상위권, 수학·사탐 거의 만점, 국어 약함. 학원은 고민 중.',
+        tags:['차분한 사교가','호기심 많은','오컬트 마니아','장난을 잘 치는'],
+      },
+      y2: {
+        metaTags:['180cm','이과','6반'],
+        info:{ age:'18세', birthday:'1994.03.27', height:'180cm', mbti:'—', school:'2학년 이과 6반', family:'부모님, 여동생(최한나)' },
+        look:'머리를 잘라 살짝 짧아졌다. 시원한 여름하복. 조용하고 차분한 인상.',
+        personality:'사람을 어려워하지 않는다. 소소한 수다로 관계를 쌓는 타입. 담담해 보여도 새로운 이야기에 은근한 호기심을 비춘다. 장난치는 걸 좋아하고 농담을 자주 던진다. 무슨 생각을 하는지 모르겠는 표정이지만 말은 솔직하다.',
+        note:'윤해동 파란 지붕 집 거주. 학업으로 바빠져 교회는 더 이상 안 다닌다. 키 178→180cm, 살이 빠졌다. 머리가 좀 자란 상태. 여동생이 선물한 팔찌를 종종 찬다. 추운 교실 에어컨 때문에 가디건을 들고 다닌다. 주머니에 청포도 사탕을 항상 챙긴다. 나희가 다니던 학원을 추천받아 토요일에 다니기 시작했다.',
+        tags:['차분한 사교가','호기심 많은','오컬트 마니아','장난을 잘 치는'],
+      },
+      y3: {
+        metaTags:['181cm','이과','6반'],
+        info:{ age:'19세', birthday:'1994.03.27', height:'181cm', mbti:'ENTP', school:'3학년 6반 / 사범대 합격' },
+        look:'졸업 준비로 조금 차분해졌다. 카시오 MQ-24-1E 손목시계가 손목에 새로 생겼다. 수환의 선물. 수환을 바라보는 눈이 달라져 있다.',
+        personality:'과학교육과(사범대) 합격 후 졸업 준비. "네가 나 좋아한다는 말 하려는 거 아니야?" — 먼저 이름을 붙인 쪽은 시몬이었다.',
+        note:'키 180→181cm. 드디어 스마트폰 구입. 입시 끝나 학원은 더 이상 안 다닌다. 학교 추천으로 원하는 대학 과학교육과에 합격. 서울에 자취방을 구해뒀다. 청포도 사탕, 추위 잘 탐, 체력 형편없는 건 그대로. 교회는 지금도 안 다닌다.',
+        tags:['차분한 사교가','호기심 많은','오컬트 마니아','장난을 잘 치는'],
+      },
+      adult: {
+        metaTags:['181cm','고등학교 물리 교사','동거'],
+        info:{ age:'33세', birthday:'1994.03.27', height:'181cm', mbti:'ENTP', school:'과학교육과(사범대) 졸업 / 고등학교 물리 교사' },
+        look:'사범대를 지나 고등학교 물리 선생님이 되었다. 성숙하고 차분한 분위기. 나른한 인상. 눈물점. 수업 시간·공부할 때만 안경을 쓴다.',
+        personality:'사람들과 어울리는 걸 좋아하지만 요란하게 드러내지 않는다. 누구와도 편안하게 대화를 이어가는 자연스러운 친화력. 자기 얘기는 잘 하지 않아 어느 선 이상에선 벽을 치는 느낌이지만, 단지 익숙하지 않을 뿐이다. 가까운 사람들 앞에선 장난스러워진다.',
+        note:'본가는 윤해동 파란 지붕 집. 해람초·중·해솔고·고려대 졸업. 22살에 카투사 입대·제대. 27살에 첫 발령, 현재 서울 여고 물리 교사. 학생들 평: "잘 가르치고 졸릴 때 무서운 이야기를 해준다. 시험 끝나면 공포 영화를 틀어준다." 주량 소주 3병(줄었음). 동창회 개근. 동탄에서 수환과 동거 중. 수환이 고등학생 때 사준 카시오 손목시계를 아직도 찬다. 안경은 우연이가 선물했다.',
+        tags:['차분한 사교가','호기심 많은','오컬트 마니아','장난을 잘 치는'],
+      },
+    }
+  }
+};
+
+function buildCharColumn(charKey, era) {
+  const cd = PROFILE_FULL_DATA[charKey];
+  const ed = cd.eras[era];
+  if (!cd || !ed) return '';
+  return `
+    <!-- 헤더 -->
+    <div class="prof-char-hdr">
+      <div class="p-av" style="background:${cd.avatarBg};overflow:hidden;padding:0">${(()=>{const imgs={sh:{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-sh-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-sh-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-sh-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-sh-profile.png'},si:{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-si-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-si-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-si-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-si-profile.png'}};const url=imgs[charKey]&&imgs[charKey][era];return url?`<img src="${url}" style="width:100%;height:100%;object-fit:cover">`:cd.avatarChar;})()}</div>
+      <div>
+        <h2>${cd.name}</h2>
+        <div class="en">${cd.en}</div>
+        <div class="p-meta">${ed.metaTags.map(t=>`<span class="mc">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+    <!-- 기본 정보 -->
+    <div class="p-sec">
+      <div class="s-head">기본 정보</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">나이</div>
+          <div style="font-size:12px;font-weight:600">${ed.info.age}</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">키</div>
+          <div style="font-size:12px;font-weight:600">${ed.info.height}</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">생일</div>
+          <div style="font-size:12px;font-weight:600">${ed.info.birthday}</div>
+        </div>
+        ${ed.info.mbti && ed.info.mbti !== '—' ? `
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">MBTI</div>
+          <div style="font-size:12px;font-weight:600">${ed.info.mbti}</div>
+        </div>` : ''}
+        ${ed.info.family ? `
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">가족관계</div>
+          <div style="font-size:12px;font-weight:600">${ed.info.family}</div>
+        </div>` : ''}
+        <div style="background:var(--bg);border-radius:8px;padding:8px 10px;grid-column:1/-1">
+          <div style="font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">소속</div>
+          <div style="font-size:12px;font-weight:600">${ed.info.school}</div>
+        </div>
+      </div>
+    </div>
+    <!-- 외형 -->
+    <div class="p-sec">
+      <div class="s-head">외형</div>
+      <div style="font-size:13px;color:var(--text-mute);line-height:1.8">${ed.look}</div>
+    </div>
+    <!-- 성격 -->
+    <div class="p-sec">
+      <div class="s-head">성격</div>
+      <div style="font-size:13px;color:var(--text-mute);line-height:1.8;margin-bottom:10px">${ed.personality}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">${ed.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>
+    ${ed.note ? `
+    <!-- 특징 -->
+    <div class="p-sec">
+      <div class="s-head">특징</div>
+      <div style="font-size:13px;color:var(--text-mute);line-height:1.8;white-space:pre-line">${ed.note}</div>
+    </div>` : ''}`;
+}
+
+// 프로필 페이지 — 공통 학년탭 (두 캐릭터 동시 + 관계 섹션 업데이트)
+function switchProfileEraGlobal(era, e) {
+  document.querySelectorAll('#profile-era-tabs-global .profile-era-tab').forEach(t => t.classList.remove('active'));
+  if (e && e.target) e.target.classList.add('active');
+
+  // 두 캐릭터 열 렌더
+  const shCol = document.getElementById('prof-col-sh');
+  const siCol = document.getElementById('prof-col-si');
+  if (shCol) shCol.innerHTML = buildCharColumn('sh', era);
+  if (siCol) siCol.innerHTML = buildCharColumn('si', era);
+
+  // 관계 섹션 업데이트
+  const eraLabel = ERAS.find(r => r.id === era)?.label || era;
+  const REL_TEXT = {
+    y1: '9년을 같은 학교에 다니면서 단 한 번도 같은 반이 되지 않았다. 1학년, 처음으로 짝꿍이 된 두 사람. 수환의 냉소가 시몬한테는 전부 흘러내린다는 사실을, 수환이 먼저 이상하게 여기기 시작했다.',
+    y2: '다른 반이 되었지만 더 자주 엮인다. 단추를 핑계로 주머니를 뒤졌고, 오락실에서 먼저 어깨에 손을 올린 건 수환이었다. 일요일 이후, 두 사람 모두 무언가 달라졌다는 걸 알면서도 이름을 붙이지 않는다.',
+    y3: '졸업식 전 어느날 밤은 이름을 만들어줬다. "네가 나 좋아한다는 말 하려는 거 아니야?" — 먼저 입 밖에 낸 쪽은 시몬이었고, 먼저 "같이 살지 않겠냐"고 꺼낸 쪽은 수환이었다. 하지만 모든 게 쉽게 흘러가지만은 않았다. 끝내 그 이름을 인식했다.',
+    adult: '각자의 길로 떠났지만, 도착지는 같았다. 처음 1년간의 공백. 군대 이후 대학생활. 또 한 차례의 거리. 결국 함께 사는 일상을 맞이한다. 함께 보내는 하루.',
+  };
+  const rel = document.getElementById('profile-relation-section');
+  if (rel) {
+    rel.innerHTML = `
+      <div class="s-head" style="text-align:center">이 시점의 관계 — ${eraLabel}</div>
+      <div style="font-size:13px;color:var(--text-mute);line-height:1.85;text-align:center;margin-top:6px">${REL_TEXT[era] || ''}</div>`;
+  }
+}
+
+function switchProfileEra(char, era, e) {
+  // 열 기반 구조로 전환 — 개별 캐릭터 탭 없음, 공통 학년탭만 사용
+}
+
+function filterEps(q) {
+  const resultEl = document.getElementById('home-ep-list');
+  if (!q.trim()) {
+    resultEl.style.display = 'none';
+    resultEl.innerHTML = '';
+    return;
+  }
+  const filtered = EPS.filter(e => e.title.includes(q) || e.grade.includes(q));
+  renderEpList('home-ep-list', filtered);
+  resultEl.style.display = filtered.length ? 'flex' : 'none';
+}
+
+function setSearch(keyword) {
+  const input = document.getElementById('home-search');
+  input.value = keyword;
+  filterEps(keyword);
+  input.focus();
+}
+
+function renderEpList(targetId, eps, from) {
+  const f = from || 'home';
+  document.getElementById(targetId).innerHTML = eps.map(ep => `
+    <div class="ep-item ${ep.g}" onclick="openRead(${ep.id}, '${f}')">
+      <span class="ep-grade ${ep.g}">${ep.grade}</span>
+      <div class="ep-item-body">
+        <div class="ep-item-row">
+          <span class="ep-title">${ep.title}</span>
+          <span class="ep-size">${ep.size}</span>
+          <span class="ep-arrow">→</span>
+        </div>
+        <div class="ep-summary">${ep.summary || ''}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════
+// 에피소드 개요 텍스트 데이터
+// ════════════════════════════
+const EP_OVERVIEW = {
+  all: '해람초·해람중 9년을 단 한 번도 같은 반이 되지 않고 지나쳐 온 두 사람이, 해솔고 1학년에서 처음으로 짝꿍이 된다. 수환의 냉정한 말투와 시몬의 흘려버리는 여유가 충돌하고 스친다. 다른 반이 되었지만 묘하게 엮이는 날들이 늘어가는 2학년. 서로를 점점 더 선명하게 의식하게 된다. 3학년 졸업식 날 저녁, 오래 참았던 말들이 흘러나온다. 넓은 도시에 살게 된 지금, 서울-대전행 기차표를 지나, 한 공간에서 두 사람 사이의 새로운 시간을 예고한다.',
+  y1: '해람초·해람중을 거쳐 해솔고에서 처음으로 같은 반이 된 두 사람. 앞자리, 뒷자리가 되면서 첫 접점이 생긴다. 단 한번도 통하지 않는 수환의 농담과 한숨, 체육대회에서 잡힌 옷자락에 "그렇게 기분 나쁘단 뜻은 아니야"라는 말을 돌려준 날 — 아직 그게 무엇인지 모르지만 눈에 밟히기 시작한 시절.',
+  y2: '다른 반이 되었지만 묘하게 엮이는 날들이 늘어난다. 야자 땡땡이를 치고 오락실에 간 날, 스카치테이프로 손목을 묶어버린 날, 제주도로 향하는 첫 수학여행 — 두 사람 사이의 거리가 좁혀지는 것을 서로 모른 척한다.',
+  y3: '졸업을 앞두고 더 이상 모른 척할 수 없게 된다. 영화제작부 동아리실의 빨간 노끈과 첫눈, 당돌한 고백. "네가 나 좋아한다는 말 하려는 거 아니야?" — 끝이면서 동시에 시작된다.',
+};
+
+// ════════════════════════════
+// 앨범 데이터 확장 (썸네일 포함)
+// ════════════════════════════
+const ALBUM_DATA_EX = {
+  y1: [
+    { title:'교실 — 짝꿍 자리', sub:'1학년 · 해솔고 교실', color:'#EEF4FB',
+      images:[{c:'#EEF4FB',lbl:'창가 짝꿍 자리'},{c:'#F5EFE8',lbl:'성경책과 책갈피'},{c:'#EFEFEF',lbl:'오후 교실'}] },
+    { title:'체육대회', sub:'1학년 · 해솔고 운동장', color:'#F5EFE8',
+      images:[{c:'#F5EFE8',lbl:'응원 티셔츠 (임나희 낙서)'},{c:'#EEF4FB',lbl:'운동장'},{c:'#F0E8DF',lbl:'1반 1등'}] },
+  ],
+  y2: [
+    { title:'단추 사건 · 오락실', sub:'2학년 · 매점·스타몰', color:'#EEF4FB',
+      images:[{c:'#EEF4FB',lbl:'매점 앞'},{c:'#EFEFEF',lbl:'하우스 오브 더 데드'},{c:'#F5EFE8',lbl:'오토바이 핸들'},{c:'#EEF4FB',lbl:'인형뽑기'}] },
+    { title:'창포동 — 김밥 · 손목 묶기', sub:'2학년 · 일요일', color:'#F0E8DF',
+      images:[{c:'#F0E8DF',lbl:'수환의 앞치마'},{c:'#EEF4FB',lbl:'수박·김밥'},{c:'#EFEFEF',lbl:'4살 과학박물관 사진'},{c:'#F5EFE8',lbl:'스카치테이프'}] },
+    { title:'제주 수학여행', sub:'2학년 · 제주도', color:'#EEF4FB',
+      images:[{c:'#EEF4FB',lbl:'초록 남방 둘'},{c:'#F0E8DF',lbl:'승마 공원·당근'},{c:'#F5EFE8',lbl:'느린 우체통'},{c:'#EFEFEF',lbl:'말 인형 열쇠고리'}] },
+    { title:'수학여행 이후', sub:'2학년 · 귀환 교실', color:'#EFEFEF',
+      images:[{c:'#EFEFEF',lbl:'도서관 야자'},{c:'#EEF4FB',lbl:'나무 책갈피'}] },
+  ],
+  y3: [
+    { title:'동아리실 — 빨간 노끈 · 첫눈', sub:'3학년 · 영화제작부 동아리실', color:'#F0E8DF',
+      images:[{c:'#F0E8DF',lbl:'빨간 노끈'},{c:'#EEF4FB',lbl:'첫눈 내리는 창'},{c:'#EFEFEF',lbl:'별관 복도'}] },
+    { title:'소주 8병 · 화해 · 첫 데이트', sub:'3학년 · 졸업식 전', color:'#EEF4FB',
+      images:[{c:'#EEF4FB',lbl:'하나님 책상 · 머그컵'},{c:'#F5EFE8',lbl:'영화 〈신세계〉 팝콘'},{c:'#EFEFEF',lbl:'초밥집 점심특선'},{c:'#F0E8DF',lbl:'북카페 · 〈너에게 닿기를〉'}] },
+  ],
+  adult: [
+    { title:'졸업 후 — 버스 10분 거리', sub:'졸업 후 · 서울', color:'#F5EFE8',
+      images:[{c:'#F5EFE8',lbl:'서울 ㅇㅇ구'},{c:'#EEF4FB',lbl:'시몬의 자취방'},{c:'#EFEFEF',lbl:'카시오 손목시계'}] },
+  ],
+};
+
+// 앨범 슬라이더 상태 (프로필 갤러리용으로만 유지)
+
+// ════════════════════════════
+// 앨범
+// ════════════════════════════
+function switchAlbum(era, e) {
+  document.querySelectorAll('.album-tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  const items = ALBUM_DATA_EX[era] || [];
+  document.getElementById('album-grid').innerHTML = items.map((item, i) => `
+    <div class="album-card" onclick="openAlbumPostByKey('${era}', ${i})">
+      <div class="album-thumb" style="background:${item.color}">
+        ${item.images[0]?.url ? `<img src="${item.images[0].url}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">` : ''}
+        <div class="album-hover-overlay">
+          <div class="album-hover-title">${item.title}</div>
+          <div class="album-hover-sub">${item.sub}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// openAlbumPost의 안전한 버전 — era키 + 인덱스로 참조
+function openAlbumPostByKey(eraKey, idx) {
+  const item = ALBUM_DATA_EX[eraKey] && ALBUM_DATA_EX[eraKey][idx];
+  if (!item) return;
+  openAlbumPost(item);
+}
+
+function openAlbumPost(item) {
+  document.getElementById('album-post-title').textContent = item.title;
+  document.getElementById('album-post-meta').textContent = item.sub;
+
+  // 커버 이미지
+  document.getElementById('album-post-cover').innerHTML =
+    `<div style="width:100%;height:100%;background:${item.color};display:flex;align-items:center;justify-content:center;font-size:14px;color:#bbb;border-radius:12px">커버 이미지</div>`;
+
+  // 포스트 본문 — 이미지·텍스트 블록 교차
+  const body = document.getElementById('album-post-body');
+  body.innerHTML = item.images.map((img, i) => `
+    <div class="blog-block-img">
+      <div class="blog-block-img-inner" style="background:${img.c}">${img.lbl}</div>
+      <div class="blog-block-img-caption">↑ ${img.lbl}</div>
+    </div>
+    <div class="blog-block-text">
+      <div class="blog-h2">${item.title} — ${img.lbl}</div>
+      <div class="ph" style="width:95%;margin-bottom:8px"></div>
+      <div class="ph" style="width:80%;margin-bottom:8px"></div>
+      <div class="ph" style="width:88%;margin-bottom:8px"></div>
+      <div class="ph" style="width:70%"></div>
+    </div>
+    ${i < item.images.length - 1 ? '<div class="blog-block-divider"></div>' : ''}
+  `).join('');
+
+  // 앨범 탭으로 전환 후 포스트 뷰 표시
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-album').classList.add('active');
+  document.querySelector('.sidebar-item[data-tab="album"]')?.classList.add('active');
+  currentPage = 'album';
+
+  document.getElementById('album-list-view').style.display = 'none';
+  document.getElementById('album-post-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function closeAlbumPost() {
+  document.getElementById('album-post-view').style.display = 'none';
+  document.getElementById('album-list-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// ════════════════════════════
+// 프로필 갤러리 슬라이더 — 자동슬라이드 + 프로그레스바
+// ════════════════════════════
+const PROFILE_GALLERY = {
+  sh: [
+    {c:'#F0E8DF',lbl:'1학년 — 짝꿍 자리 / 책갈피 사건'},
+    {c:'#EEF4FB',lbl:'1학년 — 체육대회 / 공 맞히기'},
+    {c:'#F5EFE8',lbl:'2학년 — 창포동 김밥 / 앞치마'},
+    {c:'#EFEFEF',lbl:'2학년 — 제주 승마 공원 / 당근'},
+    {c:'#F0E8DF',lbl:'3학년 — 동아리실 / 빨간 노끈'},
+    {c:'#EEF4FB',lbl:'졸업 후 — 서울 ㅇㅇ구 / 대전행 전'},
+  ],
+  si: [
+    {c:'#E8E8E8',lbl:'1학년 — 앞자리 / 초콜릿폰'},
+    {c:'#EEF4FB',lbl:'1학년 — 체육대회 / 임나희 낙서 티셔츠'},
+    {c:'#F5EFE8',lbl:'2학년 — 제주 수학여행 / 초록 남방'},
+    {c:'#EFEFEF',lbl:'2학년 — 제주 말 공원 / 수환 몰래 촬영'},
+    {c:'#E8E8E8',lbl:'3학년 — 소주 8병 / 하나님 책상'},
+    {c:'#EEF4FB',lbl:'졸업 후 — 서울 자취방 / 말 열쇠고리'},
+  ],
+};
+const profileGalleryIdx = { unified: 0 };
+const profileGalleryMode = { unified: 'slider' };
+let currentGalleryChar = 'sh';
+let galleryAutoTimer = null;
+let galleryProgressTimer = null;
+const GALLERY_DURATION = 3000;
+
+function switchGalleryChar(char) {
+  currentGalleryChar = char;
+  profileGalleryIdx.unified = 0;
+  buildProfileGallery();
+}
+
+function buildProfileGallery() {
+  const imgs = PROFILE_GALLERY[currentGalleryChar];
+  const idx  = profileGalleryIdx.unified;
+  const mainEl = document.getElementById('unified-gallery-main');
+  if (!mainEl) return;
+  mainEl.innerHTML =
+    `<div style="width:100%;height:100%;background:${imgs[idx].c};display:flex;align-items:center;justify-content:center;font-size:13px;color:#aaa;border-radius:12px">${imgs[idx].lbl}</div>`;
+  const fillEl = document.getElementById('gp-fill-single');
+  if (fillEl) { fillEl.style.transition = 'none'; fillEl.style.width = '0%'; }
+  const thumbsEl = document.getElementById('unified-gallery-thumbs');
+  if (thumbsEl) thumbsEl.innerHTML =
+    imgs.map((img,i) => `<div class="album-thumb-sm${i===idx?' active':''}" onclick="profileJump(${i})" style="background:${img.c}"></div>`).join('');
+  const gridEl = document.getElementById('unified-gallery-grid');
+  if (gridEl) gridEl.innerHTML =
+    imgs.map((img,i) => `<div class="gallery-grid-full-item" onclick="profileJump(${i})" style="background:${img.c}"></div>`).join('');
+  startGalleryAuto();
+  initGalleryDrag(mainEl);
+}
+
+// 드래그(마우스/터치) 슬라이드
+function initGalleryDrag(el) {
+  let startX = 0, isDragging = false;
+  const threshold = 40;
+  const onStart = (x) => { startX = x; isDragging = true; el.style.cursor='grabbing'; };
+  const onEnd   = (x) => {
+    if (!isDragging) return; isDragging = false; el.style.cursor='grab';
+    const diff = startX - x;
+    if (Math.abs(diff) > threshold) {
+      const len = PROFILE_GALLERY[currentGalleryChar].length;
+      profileGalleryIdx.unified = (profileGalleryIdx.unified + (diff>0?1:-1) + len) % len;
+      buildProfileGallery();
+    }
+  };
+  el.onmousedown  = e => onStart(e.clientX);
+  el.onmouseup    = e => onEnd(e.clientX);
+  el.onmouseleave = e => { if(isDragging){ isDragging=false; el.style.cursor='grab'; } };
+  el.ontouchstart = e => onStart(e.touches[0].clientX);
+  el.ontouchend   = e => onEnd(e.changedTouches[0].clientX);
+}
+
+function startGalleryAuto() {
+  clearTimeout(galleryAutoTimer);
+  clearInterval(galleryProgressTimer);
+  const fillEl = document.getElementById('gp-fill-single');
+  if (!fillEl) return;
+  fillEl.style.transition = 'none';
+  fillEl.style.width = '0%';
+  requestAnimationFrame(() => {
+    fillEl.style.transition = `width ${GALLERY_DURATION}ms linear`;
+    fillEl.style.width = '100%';
+  });
+  galleryAutoTimer = setTimeout(() => {
+    const len = PROFILE_GALLERY[currentGalleryChar].length;
+    profileGalleryIdx.unified = (profileGalleryIdx.unified + 1) % len;
+    buildProfileGallery();
+  }, GALLERY_DURATION);
+}
+
+function profileSlide(key, dir) {
+  const len = PROFILE_GALLERY[currentGalleryChar].length;
+  profileGalleryIdx.unified = (profileGalleryIdx.unified + dir + len) % len;
+  buildProfileGallery();
+}
+
+function profileJump(i) {
+  profileGalleryIdx.unified = i;
+  buildProfileGallery();
+}
+
+function toggleProfileGallery(key) {
+  const isGrid = profileGalleryMode.unified === 'grid';
+  profileGalleryMode.unified = isGrid ? 'slider' : 'grid';
+  document.getElementById('unified-gallery-slider').style.display       = isGrid ? 'block' : 'none';
+  document.getElementById('unified-gallery-grid-view').style.display    = isGrid ? 'none'  : 'block';
+  if (!isGrid) buildProfileGallery(); // 슬라이더로 돌아올 때 자동재생 재시작
+}
+
+// ════════════════════════════
+// 프로필 전환 (SC — 두 캐릭터 항상 동시 표시이므로 빈 함수 유지)
+// ════════════════════════════
+function SC(who) {
+  // 두 캐릭터가 항상 동시에 보이므로 별도 처리 없음
+}
+
+// ════════════════════════════
+// 홈 갤러리 — 랜덤 슬라이드
+// ════════════════════════════
+let homeGalleryTimer = null;
+let homeGalleryOrder = [];
+let homeGalleryPos = 0;
+const HOME_GALLERY_DURATION = 3000;
+
+function buildHomeGalleryOrder() {
+  const all = [
+    ...PROFILE_GALLERY.sh.map(img => ({...img, char:'sh'})),
+    ...PROFILE_GALLERY.si.map(img => ({...img, char:'si'})),
+  ];
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [all[i], all[j]] = [all[j], all[i]];
+  }
+  return all;
+}
+
+function startHomeGalleryProgress() {
+  const bar = document.getElementById('home-gallery-progress');
+  if (!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = `width ${HOME_GALLERY_DURATION}ms linear`;
+      bar.style.width = '100%';
+    });
+  });
+}
+
+function showHomeGallerySlide() {
+  const slideEl = document.getElementById('home-gallery-slide');
+  const dotsEl  = document.getElementById('home-gallery-dots');
+  if (!slideEl) return;
+
+  if (homeGalleryOrder.length === 0) {
+    homeGalleryOrder = buildHomeGalleryOrder();
+    homeGalleryPos = 0;
+  }
+
+  const img = homeGalleryOrder[homeGalleryPos];
+
+  slideEl.style.opacity = '0';
+  setTimeout(() => {
+    if (img.url) {
+      slideEl.innerHTML = `<img src="${img.url}" style="width:100%;height:100%;object-fit:cover">`;
+    } else {
+      slideEl.innerHTML = `<div style="width:100%;height:100%;background:${img.c};display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa">${img.lbl}</div>`;
+    }
+    slideEl.style.opacity = '1';
+  }, 300);
+
+  // 캐러셀 점 — 작게
+  if (dotsEl) {
+    dotsEl.innerHTML = homeGalleryOrder.map((_,i) =>
+      `<div style="width:${i===homeGalleryPos?'10px':'4px'};height:4px;border-radius:99px;background:rgba(255,255,255,${i===homeGalleryPos?'0.95':'0.4'});transition:all 0.3s"></div>`
+    ).join('');
+  }
+
+  // 프로그레스바 시작
+  startHomeGalleryProgress();
+
+  clearTimeout(homeGalleryTimer);
+  homeGalleryTimer = setTimeout(() => {
+    homeGalleryPos = (homeGalleryPos + 1) % homeGalleryOrder.length;
+    if (homeGalleryPos === 0) homeGalleryOrder = buildHomeGalleryOrder();
+    showHomeGallerySlide();
+  }, HOME_GALLERY_DURATION);
+}
+
+function initHomeGallery() {
+  homeGalleryOrder = buildHomeGalleryOrder();
+  homeGalleryPos = 0;
+  showHomeGallerySlide();
+}
+
+// ════════════════════════════
+// 에피소드 필터 — 개요 연동
+// ════════════════════════════
+function filterEpsByGrade(grade, e) {
+  currentEpGrade = grade;
+  document.querySelectorAll('.ep-filter-chip').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  // 개요 텍스트 교체
+  document.getElementById('ep-overview-text').textContent = EP_OVERVIEW[grade] || EP_OVERVIEW.all;
+  applyEpFilter();
+}
+
+// ════════════════════════════
+// 초기화
+// ════════════════════════════
+// ════════════════════════════
+// 공동 연표 데이터
+// ════════════════════════════
+const JOINT_TL = [
+  { age:'17세', year:'2014', shShort:'해솔고 입학', siShort:'해솔고 입학', sh:'해솔고 1학년 입학', si:'해솔고 1학년 입학', rel:'같은 반. 책갈피 계기로 첫 대화. 체육대회에서 접점 생김' },
+  { age:'18세', year:'2015', shShort:'2학년', siShort:'2학년', sh:'해솔고 2학년 2반', si:'해솔고 2학년 6반', rel:'다른 반이지만 엮이는 일이 늘어난다.' },
+  { age:'19세', year:'2016', shShort:'3학년', siShort:'3학년', sh:'해솔고 3학년', si:'해솔고 3학년', rel:'졸업식 전 고백. 대학 졸업 후 동거 약속', romance:true },
+  { age:'20세', year:'2017', shShort:'재수·서울 이사', siShort:'고려대 입학', sh:'재수 (새솔구 → 서울 이사)', si:'고려대 과학교육과 입학. 서울 자취 시작', rel:'둘 다 서울. 자주 만남' },
+  { age:'21세', year:'2018', shShort:'카이스트 입학', siShort:'고려대 2학년', sh:'카이스트 산업시스템공학과 입학 (1학년, 장학금·기숙사)', si:'고려대 2학년 재학', rel:'수환이 대전. 장거리 시작. 방학 때 서울 올라가 자취방 체류' },
+  { age:'22세', year:'2019', shShort:'카투사 입대', siShort:'카투사 입대', sh:'군대 입대 (카투사)', si:'군대 입대 (카투사)', rel:'동반 입대' },
+  { age:'23세', year:'2020', shShort:'군복무', siShort:'군복무', sh:'군복무 중', si:'군복무 중', rel:'함께 복무 중' },
+  { age:'24세', year:'2021', shShort:'전역·복학', siShort:'전역·복학', sh:'군 전역. 카이스트 복학', si:'군 전역. 고려대 복학', rel:'함께 전역. 재회' },
+  { age:'25세', year:'2022', shShort:'카이스트 재학', siShort:'임용시험 준비', sh:'카이스트 재학', si:'고려대 4학년. 임용시험 준비', rel:'서울·대전 장거리 지속' },
+  { age:'26세', year:'2023', shShort:'AI대학원 입학', siShort:'임용 합격', sh:'카이스트 졸업. 고려대 AI대학원 석박사 통합 입학 (서울)', si:'고려대 졸업. 임용시험 합격', rel:'수환이 서울 올라옴. 장거리 종료' },
+  { age:'27세', year:'2024', shShort:'AI대학원 재학', siShort:'교사 첫 발령', sh:'AI대학원 재학', si:'서울 공립 고등학교 (공학고) 과학 교사 첫 발령', rel:'동거 시작 (화성시 동탄 전세 아파트)', highlight:true },
+  { age:'28세', year:'2025', shShort:'AI대학원 재학', siShort:'교사 2년차', sh:'AI대학원 재학', si:'교사 2년차', rel:'동거 중' },
+  { age:'29세', year:'2026', shShort:'AI대학원 재학', siShort:'교사 3년차', sh:'AI대학원 재학', si:'교사 3년차', rel:'동거 중' },
+  { age:'30세', year:'2027', shShort:'졸업 준비', siShort:'여고 이동·안경', sh:'AI대학원 졸업 준비', si:'정기 인사이동 → 서울 여자고등학교. 안경 착용 시작', rel:'최시몬 가족에게 연애 사실 밝힘' },
+  { age:'31세', year:'2028', shShort:'프리랜서 퀀트', siShort:'여고 재직', sh:'AI대학원 졸업. 프리랜서 퀀트 시작', si:'여고 재직 중', rel:'수입 본격화. 동거 안정기' },
+  { age:'33세~', year:'2030~', shShort:'퀀트 재택', siShort:'여고 재직', sh:'프리랜서 퀀트 (재택)', si:'여고 재직 중', rel:'현재. 동탄 동거 중', current:true },
+];
+
+let jointTlSelected = null;
+
+function selectJointNode(idx) {
+  jointTlSelected = jointTlSelected === idx ? null : idx;
+  const activeColor = '#E82167';
+  document.querySelectorAll('#joint-tl-track .big-tl-node').forEach((el, i) => {
+    const isActive = i === jointTlSelected;
+    el.classList.toggle('is-current', isActive);
+    // 노드 점 색상
+    const dot = el.querySelector('.big-tl-dot');
+    if (dot) {
+      const row = JOINT_TL[i];
+      const isHeart = i >= 2;
+      if (isHeart) {
+        const svg = dot.querySelector('svg');
+        if (svg) svg.setAttribute('fill', isActive ? activeColor : (row.current ? activeColor : '#D1D5DB'));
+        if (isActive) svg && (svg.style.filter = `drop-shadow(0 0 3px color-mix(in srgb,${activeColor} 50%,transparent))`);
+        else if (svg) svg.style.filter = '';
+      } else {
+        if (isActive) {
+          dot.style.background = activeColor;
+          dot.style.boxShadow  = `0 0 0 3px color-mix(in srgb,${activeColor} 30%,transparent)`;
+        } else {
+          const orig = row.current ? activeColor : '#D1D5DB';
+          dot.style.background = orig;
+          dot.style.boxShadow  = row.current ? `0 0 0 3px color-mix(in srgb,${orig} 25%,transparent)` : '';
+        }
+      }
+    }
+    // 라벨 색상
+    const lbl = el.querySelector('.big-tl-lbl');
+    if (lbl) { lbl.style.color = isActive ? activeColor : ''; lbl.style.fontWeight = isActive ? '700' : ''; }
+    // 말풍선 표시
+    el.querySelectorAll('.big-tl-bubble').forEach(b => {
+      b.style.opacity = isActive ? '1' : '0';
+      b.style.pointerEvents = isActive ? 'auto' : 'none';
+    });
+  });
+  renderJointDetail();
+}
+
+function renderJointDetail() {
+  const box = document.getElementById('joint-tl-detail');
+  if (!box) return;
+  if (jointTlSelected === null) { box.style.display = 'none'; return; }
+  const row = JOINT_TL[jointTlSelected];
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-size:14px;font-weight:700;color:var(--text)">${row.age}</span>
+      <span style="font-size:11px;color:var(--text-soft)">${row.year}</span>
+      ${row.romance  ? '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--nav-active-bg);color:var(--nav-active-fg)">연애 시작</span>' : ''}
+      ${row.highlight ? '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--nav-active-bg);color:var(--nav-active-fg)">동거 시작</span>' : ''}
+      ${row.current   ? '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--nav-active-bg);color:var(--nav-active-fg)">현재</span>' : ''}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div style="background:var(--sh-bg);border-radius:8px;padding:8px 12px">
+        <div style="font-size:9px;font-weight:600;color:var(--sh);letter-spacing:.04em;margin-bottom:4px">정수환</div>
+        <div style="font-size:12px;color:var(--sh);line-height:1.6">${row.sh}</div>
+      </div>
+      <div style="background:var(--si-bg);border-radius:8px;padding:8px 12px">
+        <div style="font-size:9px;font-weight:600;color:var(--si);letter-spacing:.04em;margin-bottom:4px">최시몬</div>
+        <div style="font-size:12px;color:var(--si);line-height:1.6">${row.si}</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--text-mute);line-height:1.7;padding:8px 12px;background:var(--bg);border-radius:8px">${row.rel}</div>`;
+}
+
+function buildJointTimeline() {
+  const track = document.getElementById('joint-tl-track');
+  if (!track) return;
+
+  track.innerHTML = '<div class="big-tl-line" id="joint-tl-line"></div>' +
+    JOINT_TL.map((row, idx) => {
+      const isHeart = idx >= 2; // 19세(idx=2)부터 하트
+      const dotColor = row.current ? '#E82167' : '#D1D5DB';
+      const heartSvg = (color) =>
+        `<svg viewBox="0 0 12 11" fill="${color}" xmlns="http://www.w3.org/2000/svg" width="10" height="10" style="display:block;overflow:visible;transition:filter 0.2s">
+          <path d="M6 10.5C6 10.5 0.5 6.8 0.5 3.5C0.5 1.85 1.85 0.5 3.5 0.5C4.45 0.5 5.3 0.95 6 1.7C6.7 0.95 7.55 0.5 8.5 0.5C10.15 0.5 11.5 1.85 11.5 3.5C11.5 6.8 6 10.5 6 10.5Z"/>
+        </svg>`;
+      const dot = isHeart
+        ? `<div class="big-tl-dot heart">${heartSvg(dotColor)}</div>`
+        : `<div class="big-tl-dot" ${row.current ? `style="background:${dotColor};box-shadow:0 0 0 3px color-mix(in srgb,${dotColor} 25%,transparent)"` : ''}></div>`;
+      const topBubble = row.shShort
+        ? `<div class="big-tl-bubble top" style="opacity:0;pointer-events:none;transition:opacity 0.15s">${row.shShort}</div>` : '';
+      const botBubble = row.siShort
+        ? `<div class="big-tl-bubble bot" style="opacity:0;pointer-events:none;transition:opacity 0.15s">${row.siShort}</div>` : '';
+      return `
+        <div class="big-tl-node" style="min-width:72px" onclick="selectJointNode(${idx})">
+          ${topBubble}
+          ${dot}
+          <div class="big-tl-lbl">${row.age}</div>
+          <div class="big-tl-sub">${row.year}</div>
+          ${botBubble}
+        </div>`;
+    }).join('');
+
+  requestAnimationFrame(() => {
+    const nodeEls = track.querySelectorAll('.big-tl-node');
+    const line    = document.getElementById('joint-tl-line');
+    if (!nodeEls.length || !line) return;
+    const trackRect = track.getBoundingClientRect();
+    const firstDot  = nodeEls[0].querySelector('.big-tl-dot');
+    const lastDot   = nodeEls[nodeEls.length - 1].querySelector('.big-tl-dot');
+    line.style.top   = (nodeEls[0].offsetTop + firstDot.offsetTop + 5 - 1) + 'px';
+    line.style.left  = (firstDot.getBoundingClientRect().left - trackRect.left + 5) + 'px';
+    line.style.width = ((lastDot.getBoundingClientRect().left + 5) - (firstDot.getBoundingClientRect().left + 5)) + 'px';
+    line.style.right = 'auto';
+
+    nodeEls.forEach(nodeEl => {
+      const tb  = nodeEl.querySelector('.big-tl-bubble.top');
+      const bb  = nodeEl.querySelector('.big-tl-bubble.bot');
+      const dot = nodeEl.querySelector('.big-tl-dot');
+      const dotCY = dot.offsetTop + 5;
+      if (tb) { tb.style.top = (dotCY - 10 - (tb.offsetHeight || 22)) + 'px'; tb.style.bottom = 'auto'; }
+      if (bb) {
+        const sub = nodeEl.querySelector('.big-tl-sub');
+        bb.style.top    = sub ? (sub.offsetTop + sub.offsetHeight + 8) + 'px' : (dotCY + 28) + 'px';
+        bb.style.bottom = 'auto';
+      }
+    });
+
+    // 페이드 — PC·모바일 공통
+    const outer = document.getElementById('joint-tl-outer');
+    if (outer) {
+      const upd = () => {
+        const sl = track.scrollLeft, max = track.scrollWidth - track.clientWidth;
+        outer.classList.toggle('fade-left',  sl > 2);
+        outer.classList.toggle('fade-right', max > 2 && sl < max - 2);
+      };
+      upd();
+      track.addEventListener('scroll', upd, { passive: true });
+    }
+  });
+}
+
+// ════════════════════════════
+// 초기화
+// ════════════════════════════
+buildEraGrid(); // (deprecated stub)
+renderActiveCard();
+buildMiniCards();
+buildHomeEpList(activeEraId);
+buildActiveStats();
+buildJointTimeline();
+buildBigTimeline();
+buildMiniTL(TL_ALL);
+renderEpList('full-ep-list', EPS, 'episodes');
+switchAlbum('y1', { target: document.querySelector('.album-tab') });
+buildProfileGallery();
+// 프로필 초기 렌더 (1학년)
+switchProfileEraGlobal('y1', { target: document.querySelector('#profile-era-tabs-global .profile-era-tab') });
+initHomeGallery();
+
+// 창 크기 변경 시 칩스 가시성 재체크
+window.addEventListener('resize', () => {
+  const card = document.getElementById('active-card');
+  if (card && card.classList.contains('flipped')) checkBackChipsVisibility();
+});
+
+</script>
+
+<script>
+// ── 드래그 스크롤 공통 함수 ──
+function makeDraggable(el, opts) {
+  if (!el) return;
+  const fixedLeft = opts && opts.fixedLeft; // 고정 영역 너비(px)
+  let isDown = false, startX, scrollLeft, moved = false;
+
+  el.addEventListener('mousedown', e => {
+    // 고정 영역 클릭은 드래그 무시
+    if (fixedLeft && e.offsetX < fixedLeft) return;
+    isDown = true;
+    moved  = false;
+    el.style.cursor = 'grabbing';
+    startX     = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+  });
+  el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = ''; });
+  el.addEventListener('mouseup',    e => {
+    isDown = false;
+    el.style.cursor = '';
+    // 드래그했으면 클릭 이벤트 방지
+    if (moved) e.stopPropagation();
+  });
+  el.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = x - startX;
+    if (Math.abs(walk) > 3) moved = true;
+    el.scrollLeft = scrollLeft - walk;
+  });
+  // 클릭이 드래그로 오인되지 않도록
+  el.addEventListener('click', e => {
+    if (moved) { e.stopPropagation(); moved = false; }
+  }, true);
+}
+
+// 탭바: 로고 영역(약 56px)은 고정, 나머지만 드래그
+makeDraggable(document.querySelector('.sidebar'), { fixedLeft: 56 });
+
+// 연표 드래그 + 휠 스크롤
+function makeScrollable(el) {
+  if (!el) return;
+  makeDraggable(el);
+  el.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // 이미 가로 스크롤 중이면 무시
+    e.preventDefault();
+    el.scrollLeft += e.deltaY * 1.5;
+  }, { passive: false });
+}
+makeScrollable(document.getElementById('big-tl-track'));
+makeScrollable(document.getElementById('joint-tl-track'));
+</script>
+</body>
+</html>

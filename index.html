@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>하모니 아카이브</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFE5FA'/%3E%3Cg fill='%23E82167'%3E%3Cellipse cx='10.5' cy='22.5' rx='3.5' ry='2.5'/%3E%3Crect x='13.5' y='10' width='2' height='13' rx='1'/%3E%3Cellipse cx='19.5' cy='19.5' rx='3.5' ry='2.5'/%3E%3Crect x='22.5' y='7' width='2' height='13' rx='1'/%3E%3Crect x='13.5' y='10' width='11' height='2' rx='1'/%3E%3C/g%3E%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+*{cursor:none !important}
 
 /* ── 웹폰트 ── */
 @font-face {
@@ -197,7 +199,10 @@ body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans 
 }
 
 /* 좌측: 큰 활성 카드 + 통계 (Cards 영역) */
-.active-card-section{}
+.active-card-section{
+  display:flex;
+  flex-direction:column;
+}
 .home-gallery-section{
   display:flex;
   flex-direction:column;
@@ -209,11 +214,13 @@ body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans 
   position:relative;
   width:100%;
   padding-top:75%;
-  transition:padding-top 0.7s cubic-bezier(0.4,0,0.2,1);
+  transition:padding-top 0.7s cubic-bezier(0.4,0,0.2,1),
+             margin-bottom 0.5s cubic-bezier(0.4,0,0.2,1);
 }
 .active-card-wrap.flipped-wrap{
   padding-top:50%;
 }
+
 @keyframes scalePop{
   0%  { opacity:0; transform:scale(0.88); }
   65% { opacity:1; transform:scale(1.03); }
@@ -329,6 +336,29 @@ body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans 
 .ac-back-tags{
   display:flex;flex-wrap:wrap;gap:3px;
   grid-column:1/-1;margin-top:4px;
+}
+
+/* 뒷면 칩스 — flex 크기 + opacity 트랜지션으로 자연스럽게 */
+.back-chips-wrap{
+  transition:
+    flex 0.5s cubic-bezier(0.4,0,0.2,1),
+    max-height 0.5s cubic-bezier(0.4,0,0.2,1),
+    opacity 0.4s cubic-bezier(0.4,0,0.2,1),
+    padding 0.4s cubic-bezier(0.4,0,0.2,1),
+    margin 0.4s cubic-bezier(0.4,0,0.2,1);
+  overflow:hidden;
+}
+
+/* 1160px 이하: 칩스 숨기고 공간 자연스럽게 회수 */
+@media(max-width:1160px) and (min-width:641px){
+  .back-chips-wrap{
+    flex:0 !important;
+    max-height:0 !important;
+    opacity:0 !important;
+    padding:0 !important;
+    margin:0 !important;
+    pointer-events:none;
+  }
 }
 
 /* 좌측 하단: 분량 정보 (cloudcash의 Current balance 자리) */
@@ -1273,23 +1303,28 @@ body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans 
   .active-card-section{
     order:0 !important;
     width:100%;
+    display:flex;
+    flex-direction:column;
   }
   .active-card-wrap{
     padding-top:75%;
-    margin-bottom:0;
+    margin-bottom:6px;
+    transition:padding-top 0.7s cubic-bezier(0.4,0,0.2,1);
   }
   .active-card-wrap.flipped-wrap{
-    padding-top:50%;
+    padding-top:56%;
   }
+
   .active-stats{
     display:grid !important;
     padding-top:0 !important;
-    margin-top:8px;
+    margin-top:0 !important;
     transition:none;
   }
+  /* 모바일: pulled-up 효과 무효화 */
   .active-stats.pulled-up{
     padding-top:0 !important;
-    margin-top:8px;
+    margin-top:0 !important;
   }
 
   /* 갤러리: order 1 → 카드 바로 아래 */
@@ -1354,6 +1389,17 @@ body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans 
     border-radius:16px;
   }
   .big-tl-track::-webkit-scrollbar{display:none}
+
+  /* ── 타임라인(공동연표): 모바일에서 터치 드래그 활성화 ── */
+  #joint-tl-outer{overflow:hidden}
+  #joint-tl-track{
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-x;
+    scrollbar-width:none;
+  }
+  #joint-tl-track::-webkit-scrollbar{display:none}
   .big-tl-node{min-width:60px;flex:0 0 auto;padding:18px 2px 20px}
   .big-tl-lbl{font-size:9px}
   .big-tl-sub{font-size:8px}
@@ -1425,14 +1471,10 @@ body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans 
   .prof-dual-grid{ grid-template-columns:1fr; gap:20px }
 }
 
-/* 모바일: 카드 뒷면 칩스 2배 크기 */
+/* 모바일: 카드 뒷면 칩스 완전 제거 */
 @media(max-width:640px){
-  .back-chips-wrap span{
-    font-size:14px !important;
-    padding:4px 10px !important;
-  }
   .back-chips-wrap{
-    gap:5px !important;
+    display:none !important;
   }
 }
 
@@ -2175,35 +2217,39 @@ function flipActiveCard() {
     setTimeout(checkBackChipsVisibility, 750);
   } else {
     card.classList.remove('flipped');
-    if (wrap) wrap.classList.remove('flipped-wrap');
+    if (wrap) {
+      wrap.classList.remove('flipped-wrap');
+      wrap.style.paddingTop = ''; // 칩스 숨김으로 조절된 padding-top 복원
+    }
     if (stats) stats.classList.remove('pulled-up');
   }
   setTimeout(() => { _isFlipping = false; }, 750);
 }
 
-// 카드 높이가 충분하지 않으면 칩스 박스 숨김
-// 이미지 영역이 최소 80px 이상이어야 칩스 표시
+// 1160px~641px 구간: 칩스가 CSS로 숨겨질 때 wrap의 padding-top을 줄여 통계가 따라오게 함
 function checkBackChipsVisibility() {
   const card = document.getElementById('active-card');
-  if (!card) return;
-  const chipsWraps = card.querySelectorAll('.back-chips-wrap');
-  if (!chipsWraps.length) return;
-  const cardH = card.offsetHeight;
-  const show = cardH >= 220;
-  chipsWraps.forEach(el => {
-    if (!show) { el.style.display = 'none'; return; }
-    el.style.display = 'flex';
-    // 줄 수 체크 — 칩스가 3줄 이상이면 숨김
-    const spans = el.querySelectorAll('span');
-    if (!spans.length) return;
-    let rows = 1;
-    let lastTop = spans[0].getBoundingClientRect().top;
-    for (let i = 1; i < spans.length; i++) {
-      const top = spans[i].getBoundingClientRect().top;
-      if (top > lastTop + 2) { rows++; lastTop = top; }
-    }
-    el.style.display = rows >= 3 ? 'none' : 'flex';
-  });
+  if (!card || !card.classList.contains('flipped')) return;
+  const wrap = card.closest('.active-card-wrap');
+  if (!wrap) return;
+
+  const w = window.innerWidth;
+  const isChipsHidden = w <= 1160 && w > 640;
+
+  if (isChipsHidden) {
+    // 칩스가 숨겨진 상태: 카드 내에서 칩스 영역(flex:1)이 차지하던 비율만큼 padding-top 축소
+    // flipped-wrap 기준 50% → 칩스 없이 프로필+이름만 남을 때의 비율 ~34%
+    wrap.style.paddingTop = '34%';
+  } else {
+    // 칩스 표시: 인라인 스타일 제거해 CSS 클래스값 복원
+    wrap.style.paddingTop = '';
+  }
+}
+
+// wrap padding-top 복원 (앞면 전환 시 호출)
+function resetWrapPaddingTop() {
+  const wrap = document.querySelector('.active-card-wrap');
+  if (wrap) wrap.style.paddingTop = '';
 }
 
 function buildMiniCards() {
@@ -2368,6 +2414,10 @@ function buildBigTimeline() {
       updateFade();
       track.addEventListener('scroll', updateFade, { passive: true });
     }
+
+    // 활성 노드를 트랙 중앙으로 부드럽게 스크롤
+    const activeNode = track.querySelector('.big-tl-node.is-current');
+    scrollNodeToCenter(track, activeNode);
   });
 }
 
@@ -2375,8 +2425,14 @@ function swapActiveEra(eraId) {
   if (eraId === activeEraId) return;
   activeEraId = eraId;
   activeBackChar = 'sh'; // 뒷면 캐릭터 초기화
-  // 카드가 뒤집힌 상태면 다시 앞으로
-  document.getElementById('active-card').classList.remove('flipped');
+  // 카드가 뒤집힌 상태면 wrap·stats 상태도 함께 초기화
+  const card = document.getElementById('active-card');
+  const wrap = card?.closest('.active-card-wrap');
+  const stats = document.getElementById('active-stats');
+  card?.classList.remove('flipped');
+  wrap?.classList.remove('flipped-wrap');
+  if (wrap) wrap.style.paddingTop = '';
+  stats?.classList.remove('pulled-up');
   renderActiveCard(true); // 미니카드 클릭 시에만 팝 애니메이션
   buildMiniCards();
   buildActiveStats();
@@ -2762,10 +2818,16 @@ function warpToProfile(targetEra) {
 // ── 프로필 전신이미지 토글 ──
 const FULLBODY_IMGS = {
   sh: {
-    y1: 'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-sh-fulb.png',
+    y1:    'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-sh-fulb.png',
+    y2:    'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-sh-fulb.png',
+    y3:    'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-sh-fulb.png',
+    adult: 'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-sh-fulb.png',
   },
   si: {
-    y1: 'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-si-fulb.png',
+    y1:    'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-si-fulb.png',
+    y2:    'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-si-fulb.png',
+    y3:    'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-si-fulb.png',
+    adult: 'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-si-fulb.png',
   },
 };
 
@@ -2775,15 +2837,18 @@ function toggleFullBody(id) {
   const arrowId = id.replace('fullbody-', 'fullbody-arrow-');
   const arrow = document.getElementById(arrowId);
   const isOpen = el.style.maxHeight && el.style.maxHeight !== '0px';
-  // id 형식: fullbody-{charKey}-{era}
-  const parts = id.split('-');
-  const charKey = parts[1];
-  const era = parts[2];
-  // 이미지 src 지연 설정
+
+  // data-char / data-era 속성으로 안전하게 파싱
+  const charKey = el.dataset.char;
+  const era     = el.dataset.era;
+
+  // 이미지 src 지연 설정 — 아직 실제 URL이 없을 때만
   const img = document.getElementById(`fullbody-img-${charKey}-${era}`);
-  if (img && !img.src && FULLBODY_IMGS[charKey]?.[era]) {
-    img.src = FULLBODY_IMGS[charKey][era];
+  const url = FULLBODY_IMGS[charKey]?.[era];
+  if (img && url && img.getAttribute('src') !== url) {
+    img.src = url;
   }
+
   if (isOpen) {
     el.style.maxHeight = '0px';
     if (arrow) arrow.style.transform = 'rotate(0deg)';
@@ -2878,50 +2943,23 @@ function buildCharColumn(charKey, era) {
   const cd = PROFILE_FULL_DATA[charKey];
   const ed = cd.eras[era];
   if (!cd || !ed) return '';
+  const fulbUrl = FULLBODY_IMGS[charKey]?.[era] || '';
   return `
     <!-- 헤더 -->
     <div class="prof-char-hdr">
       <div class="p-av" style="background:${cd.avatarBg};overflow:hidden;padding:0">${(()=>{const imgs={sh:{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-sh-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-sh-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-sh-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-sh-profile.png'},si:{y1:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/1y-si-profile.png',y2:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/2y-si-profile.png',y3:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/3y-si-profile.png',adult:'https://raw.githubusercontent.com/yunajiyu/ha-static-xk7q/main/images/ad-si-profile.png'}};const url=imgs[charKey]&&imgs[charKey][era];return url?`<img src="${url}" style="width:100%;height:100%;object-fit:cover">`:cd.avatarChar;})()}</div>
-      <div>
+      <div style="flex:1;min-width:0">
         <h2>${cd.name}</h2>
         <div class="en">${cd.en}</div>
-        <div class="p-meta">${ed.metaTags.map(t=>`<span class="mc">${t}</span>`).join('')}</div>
-      </div>
-    </div>
-    <!-- 전신 이미지 토글 -->
-    <div onclick="toggleFullBody('fullbody-${charKey}-${era}')" style="
-      display:flex;align-items:center;justify-content:center;
-      padding:6px 0 2px;cursor:pointer;gap:4px;
-      color:var(--text-faint);font-size:11px;font-family:'SUITE',sans-serif;
-      transition:color 0.15s;
-    " onmouseover="this.style.color='var(--text-soft)'" onmouseout="this.style.color='var(--text-faint)'">
-      <svg id="fullbody-arrow-${charKey}-${era}" width="14" height="14" viewBox="0 0 14 14" fill="none" style="transition:transform 0.3s">
-        <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <!-- 전신 이미지 영역 -->
-    <div id="fullbody-${charKey}-${era}" style="
-      max-height:0;overflow:hidden;
-      transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);
-    ">
-      <div style="
-        margin:6px 0 4px;
-        background:#ffffff;
-        border:1px solid var(--border);
-        border-radius:12px;
-        overflow:hidden;
-        display:flex;justify-content:center;align-items:flex-start;
-        max-width:100%;
-        box-sizing:border-box;
-      ">
-        <img id="fullbody-img-${charKey}-${era}"
-          src=""
-          alt="${cd.name} 전신"
-          style="width:100%;max-width:100%;height:auto;max-height:100%;display:block;object-fit:contain;box-sizing:border-box"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-        >
-        <div style="display:none;width:100%;min-height:320px;align-items:center;justify-content:center;font-size:12px;color:var(--text-faint);padding:2rem">
-          이미지 준비 중
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:nowrap">
+          <div class="p-meta" style="flex:1;min-width:0">${ed.metaTags.map(t=>`<span class="mc">${t}</span>`).join('')}</div>
+          ${fulbUrl ? `<span onclick="openFulbPopup('${fulbUrl}','${cd.name}')" style="
+            font-size:10px;font-weight:600;color:var(--text-soft);
+            cursor:pointer;white-space:nowrap;flex-shrink:0;
+            border:1px solid var(--border);border-radius:6px;
+            padding:3px 8px;transition:all 0.15s;
+            " onmouseover="this.style.color='var(--text)';this.style.borderColor='var(--border-strong)'"
+              onmouseout="this.style.color='var(--text-soft)';this.style.borderColor='var(--border)'">전신보기</span>` : ''}
         </div>
       </div>
     </div>
@@ -3407,6 +3445,16 @@ const JOINT_TL = [
 
 let jointTlSelected = null;
 
+// ── 타임라인 노드를 트랙 중앙으로 부드럽게 스크롤 ──
+function scrollNodeToCenter(track, nodeEl) {
+  if (!track || !nodeEl) return;
+  const trackW  = track.clientWidth;
+  const nodeLeft  = nodeEl.offsetLeft;
+  const nodeW     = nodeEl.offsetWidth;
+  const target    = nodeLeft - trackW / 2 + nodeW / 2;
+  track.scrollTo({ left: target, behavior: 'smooth' });
+}
+
 function selectJointNode(idx) {
   jointTlSelected = jointTlSelected === idx ? null : idx;
   const activeColor = '#E82167';
@@ -3444,6 +3492,13 @@ function selectJointNode(idx) {
     });
   });
   renderJointDetail();
+
+  // 선택된 노드를 트랙 중앙으로 스크롤
+  if (jointTlSelected !== null) {
+    const track   = document.getElementById('joint-tl-track');
+    const nodeEls = track ? track.querySelectorAll('.big-tl-node') : [];
+    scrollNodeToCenter(track, nodeEls[jointTlSelected]);
+  }
 }
 
 function renderJointDetail() {
@@ -3559,7 +3614,7 @@ buildProfileGallery();
 switchProfileEraGlobal('y1', { target: document.querySelector('#profile-era-tabs-global .profile-era-tab') });
 initHomeGallery();
 
-// 창 크기 변경 시 칩스 가시성 재체크
+// 창 크기 변경 시 칩스/통계 위치 재체크
 window.addEventListener('resize', () => {
   const card = document.getElementById('active-card');
   if (card && card.classList.contains('flipped')) checkBackChipsVisibility();
@@ -3706,8 +3761,8 @@ function makeDraggable(el, opts) {
   const fixedLeft = opts && opts.fixedLeft; // 고정 영역 너비(px)
   let isDown = false, startX, scrollLeft, moved = false;
 
+  // ── 마우스 이벤트 ──
   el.addEventListener('mousedown', e => {
-    // 고정 영역 클릭은 드래그 무시
     if (fixedLeft && e.offsetX < fixedLeft) return;
     isDown = true;
     moved  = false;
@@ -3719,7 +3774,6 @@ function makeDraggable(el, opts) {
   el.addEventListener('mouseup',    e => {
     isDown = false;
     el.style.cursor = '';
-    // 드래그했으면 클릭 이벤트 방지
     if (moved) e.stopPropagation();
   });
   el.addEventListener('mousemove', e => {
@@ -3734,6 +3788,23 @@ function makeDraggable(el, opts) {
   el.addEventListener('click', e => {
     if (moved) { e.stopPropagation(); moved = false; }
   }, true);
+
+  // ── 터치 이벤트 (모바일) ──
+  let touchStartX = 0, touchScrollLeft = 0, touchMoved = false;
+  el.addEventListener('touchstart', e => {
+    touchStartX     = e.touches[0].pageX;
+    touchScrollLeft = el.scrollLeft;
+    touchMoved      = false;
+  }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    const dx = touchStartX - e.touches[0].pageX;
+    if (Math.abs(dx) > 3) touchMoved = true;
+    el.scrollLeft = touchScrollLeft + dx;
+  }, { passive: true });
+  el.addEventListener('touchend', e => {
+    if (touchMoved) e.stopPropagation();
+    touchMoved = false;
+  });
 }
 
 // 탭바: 로고 영역(약 56px)은 고정, 나머지만 드래그
@@ -3752,5 +3823,433 @@ function makeScrollable(el) {
 makeScrollable(document.getElementById('big-tl-track'));
 makeScrollable(document.getElementById('joint-tl-track'));
 </script>
+<!-- ── 전신 이미지 팝업 ── -->
+<div id="fulb-popup" onclick="closeFulbPopup()" style="
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.6);
+  align-items:center;justify-content:center;
+  padding:1.5rem;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+">
+  <div onclick="event.stopPropagation()" style="
+    position:relative;
+    width:min(900px, calc(100vw - 3rem));
+    background:#fff;border-radius:20px;
+    box-shadow:0 12px 60px rgba(0,0,0,0.25);
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  ">
+    <!-- 닫기 버튼 -->
+    <button onclick="closeFulbPopup()" style="
+      position:absolute;top:12px;right:12px;z-index:10;
+      width:30px;height:30px;border-radius:50%;
+      background:rgba(0,0,0,0.18);border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:15px;line-height:1;
+      transition:background 0.15s;font-family:sans-serif;
+    " onmouseover="this.style.background='rgba(0,0,0,0.38)'"
+       onmouseout="this.style.background='rgba(0,0,0,0.18)'">✕</button>
+    <!-- 이름 레이블 -->
+    <div id="fulb-popup-name" style="
+      position:absolute;top:14px;left:16px;z-index:10;
+      font-size:11px;font-weight:700;color:rgba(255,255,255,0.95);
+      background:rgba(0,0,0,0.22);border-radius:6px;padding:3px 9px;
+      font-family:'SUITE',sans-serif;
+    "></div>
+    <!-- 이미지: 900px 너비에 꽉 맞게, 세로는 화면 높이 90% 초과 안 함 -->
+    <img id="fulb-popup-img" src="" alt="전신 이미지" style="
+      display:block;
+      width:100%;
+      height:auto;
+      max-height:90vh;
+      object-fit:contain;
+    ">
+  </div>
+</div>
+
+<script>
+function openFulbPopup(url, name) {
+  const popup = document.getElementById('fulb-popup');
+  const img   = document.getElementById('fulb-popup-img');
+  const lbl   = document.getElementById('fulb-popup-name');
+  img.src  = url;
+  lbl.textContent = name;
+  popup.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeFulbPopup() {
+  document.getElementById('fulb-popup').style.display = 'none';
+  document.body.style.overflow = '';
+}
+// ESC 키로 닫기
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFulbPopup();
+});
+</script>
+
+<!-- ── 마우스 커서: 핑크 음표들 + 이동 파티클 ── -->
+<style>
+#cursor-wrap {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#cursor-wrap.active { opacity: 1; }
+
+/* 메인 음표 — 커서 포인트 기준 */
+#cursor-note-svg {
+  position: absolute;
+  left: 0px;
+  top: -22px;
+  width: 22px; height: 26px;
+}
+
+/* 미니 음표 2개 — JS가 랜덤 위치로 설정 */
+#cursor-mini-a {
+  position: absolute;
+  width: 13px; height: 16px;
+  opacity: 0.75;
+  transition: left 1.8s cubic-bezier(0.45,0,0.55,1),
+              top  1.8s cubic-bezier(0.45,0,0.55,1);
+}
+#cursor-mini-b {
+  position: absolute;
+  width: 10px; height: 12px;
+  opacity: 0.45;
+  transition: left 2.4s cubic-bezier(0.45,0,0.55,1),
+              top  2.4s cubic-bezier(0.45,0,0.55,1);
+}
+
+/* 대기 float — 메인 */
+#cursor-wrap.active #cursor-note-svg {
+  animation: note-float 1.6s ease-in-out infinite;
+}
+@keyframes note-float {
+  0%   { transform: translateY(0)    rotate(-15deg) scale(1);   }
+  45%  { transform: translateY(-7px) rotate(7deg)  scale(1.1); }
+  100% { transform: translateY(0)    rotate(-15deg) scale(1);   }
+}
+
+/* 미니 음표 float */
+#cursor-wrap.active #cursor-mini-a {
+  animation: mini-float-a 1.9s ease-in-out infinite;
+}
+#cursor-wrap.active #cursor-mini-b {
+  animation: mini-float-b 2.3s ease-in-out infinite;
+}
+@keyframes mini-float-a {
+  0%   { transform: translateY(0)    rotate(-10deg); }
+  50%  { transform: translateY(-5px) rotate(5deg);  }
+  100% { transform: translateY(0)    rotate(-10deg); }
+}
+@keyframes mini-float-b {
+  0%   { transform: translateY(0)    rotate(5deg);  }
+  50%  { transform: translateY(-4px) rotate(-8deg); }
+  100% { transform: translateY(0)    rotate(5deg);  }
+}
+
+/* 클릭 — 메인 쪼그라들었다 복귀 */
+#cursor-wrap.burst #cursor-note-svg {
+  animation: note-squish 0.42s cubic-bezier(0.34,1.56,0.64,1) forwards !important;
+}
+@keyframes note-squish {
+  0%   { transform: rotate(-15deg) scale(1);    }
+  18%  { transform: rotate(-15deg) scale(0.28); }
+  55%  { transform: rotate(-15deg) scale(1.2);  }
+  100% { transform: rotate(-15deg) scale(1);    }
+}
+#cursor-wrap.burst #cursor-mini-a {
+  animation: mini-burst-a 0.4s ease-out forwards !important;
+}
+#cursor-wrap.burst #cursor-mini-b {
+  animation: mini-burst-b 0.4s ease-out forwards !important;
+}
+@keyframes mini-burst-a {
+  0%   { transform: rotate(-10deg) scale(1);   }
+  30%  { transform: rotate(-25deg) scale(1.4); }
+  100% { transform: rotate(-10deg) scale(1);   }
+}
+@keyframes mini-burst-b {
+  0%   { transform: rotate(5deg) scale(1);    }
+  30%  { transform: rotate(20deg) scale(1.4); }
+  100% { transform: rotate(5deg) scale(1);    }
+}
+
+/* 대기 반짝 파티클 */
+.idle-sparkle {
+  pointer-events:none; position:fixed; z-index:99997;
+  border-radius:50%;
+  animation: idle-twinkle 0.8s ease-out forwards;
+}
+@keyframes idle-twinkle {
+  0%   { opacity:0;   transform:translate(-50%,-50%) scale(0.3); }
+  30%  { opacity:0.9; transform:translate(-50%,-50%) scale(1);   }
+  100% { opacity:0;   transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(0.1); }
+}
+  pointer-events:none; position:fixed; z-index:99997;
+  border-radius:50%;
+  animation: trail-fade 0.5s ease-out forwards;
+}
+@keyframes trail-fade {
+  0%   { opacity:0.8; transform:translate(-50%,-50%) scale(1); }
+  100% { opacity:0;   transform:translate(-50%,-50%) scale(0); }
+}
+
+/* 클릭 파티클 */
+.click-particle {
+  pointer-events:none; position:fixed; z-index:99998;
+  border-radius:50%;
+  animation: click-fly 0.65s ease-out forwards;
+}
+@keyframes click-fly {
+  0%   { opacity:1;  transform:translate(-50%,-50%) scale(1.3); }
+  100% { opacity:0;  transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(0); }
+}
+
+/* 하트 */
+.click-heart {
+  pointer-events:none; position:fixed; z-index:99998;
+  line-height:1;
+  animation: heart-fly 0.72s ease-out forwards;
+  user-select:none;
+}
+@keyframes heart-fly {
+  0%   { opacity:1; transform:translate(-50%,-50%) scale(1) rotate(var(--r0)); }
+  60%  { opacity:1; }
+  100% { opacity:0; transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(0.15) rotate(var(--r1)); }
+}
+</style>
+
+<!-- 커서 래퍼 (삼각형 제거) -->
+<div id="cursor-wrap">
+
+  <!-- 메인 핑크 8분음표 -->
+  <svg id="cursor-note-svg" viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="5.5" cy="18" rx="4.5" ry="3.2" fill="#FF69B4"/>
+    <rect x="9.5" y="4" width="2" height="15" rx="1" fill="#FF69B4"/>
+    <path d="M11.5 4 Q17 7 14 13 Q12 10 11.5 8 Z" fill="#FF69B4"/>
+  </svg>
+
+  <!-- 미니 음표 A -->
+  <svg id="cursor-mini-a" viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="5.5" cy="18" rx="4.5" ry="3.2" fill="#FF85C2"/>
+    <rect x="9.5" y="4" width="2" height="15" rx="1" fill="#FF85C2"/>
+    <path d="M11.5 4 Q17 7 14 13 Q12 10 11.5 8 Z" fill="#FF85C2"/>
+  </svg>
+
+  <!-- 미니 음표 B -->
+  <svg id="cursor-mini-b" viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="5.5" cy="18" rx="4.5" ry="3.2" fill="#FFB6D9"/>
+    <rect x="9.5" y="4" width="2" height="15" rx="1" fill="#FFB6D9"/>
+    <path d="M11.5 4 Q17 7 14 13 Q12 10 11.5 8 Z" fill="#FFB6D9"/>
+  </svg>
+
+</div>
+
+<script>
+(function() {
+  const wrap  = document.getElementById('cursor-wrap');
+  const miniA = document.getElementById('cursor-mini-a');
+  const miniB = document.getElementById('cursor-mini-b');
+  const BURST_COLORS = ['#FF69B4','#FF85C2','#fff','#FFB6D9','#FFD6EC','#fff'];
+  const TRAIL_COLORS = ['#FF69B4','#FF85C2','#FFB6D9','#FFD6EC','#fff'];
+
+  /* 미니 음표 위치 랜덤 재배치 */
+  function randomizeMiniPos() {
+    const offsets = [
+      { minL:14, maxL:36, minT:-48, maxT:-18 },
+      { minL:22, maxL:48, minT:-58, maxT:-28 }
+    ];
+    const rnd = (min, max) => min + Math.random() * (max - min);
+    miniA.style.left = rnd(offsets[0].minL, offsets[0].maxL) + 'px';
+    miniA.style.top  = rnd(offsets[0].minT, offsets[0].maxT) + 'px';
+    miniB.style.left = rnd(offsets[1].minL, offsets[1].maxL) + 'px';
+    miniB.style.top  = rnd(offsets[1].minT, offsets[1].maxT) + 'px';
+  }
+  randomizeMiniPos();
+  // 2~4초마다 슬그머니 위치 변경
+  setInterval(randomizeMiniPos, 2500 + Math.random() * 1500);
+
+  /* 대기 반짝 파티클 — 주기적으로 음표 주변에 생성 */
+  const IDLE_COLORS = ['#FF69B4','#FF85C2','#FFB6D9','#fff','#FFD6EC','#FFB6D9'];
+  let idleTimer = null;
+  let curX = -999, curY = -999;
+  let isActive = false;
+
+  function spawnIdleSparkle() {
+    if (!isActive) return;
+    const useHeart = Math.random() < 0.35; // 35% 확률로 하트
+    const angle = Math.random() * Math.PI * 2;
+    const r     = 8 + Math.random() * 22;
+    const ox    = Math.cos(angle) * r;
+    const oy    = Math.sin(angle) * r;
+    const sx    = (Math.random() - 0.5) * 12;
+    const sy    = (Math.random() - 0.5) * 12 - 6;
+    const color = IDLE_COLORS[Math.floor(Math.random() * IDLE_COLORS.length)];
+
+    if (useHeart) {
+      const el = document.createElement('div');
+      el.className = 'idle-sparkle';
+      const fs = 6 + Math.random() * 6;
+      el.textContent = '♥';
+      el.style.cssText = `
+        left:${curX + ox}px; top:${curY + oy}px;
+        font-size:${fs}px;
+        color:${color};
+        line-height:1;
+        border-radius:0;
+        background:none;
+        box-shadow:none;
+        --sx:${sx}px; --sy:${sy}px;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 820);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'idle-sparkle';
+      const size = 2 + Math.random() * 3.5;
+      el.style.cssText = `
+        left:${curX + ox}px; top:${curY + oy}px;
+        width:${size}px; height:${size}px;
+        background:${color};
+        box-shadow:0 0 ${size+2}px ${color};
+        --sx:${sx}px; --sy:${sy}px;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 820);
+    }
+  }
+
+  function startIdleSparkles() {
+    if (idleTimer) return;
+    idleTimer = setInterval(spawnIdleSparkle, 180);
+  }
+  function stopIdleSparkles() {
+    clearInterval(idleTimer);
+    idleTimer = null;
+  }
+
+
+  function spawnTrail(x, y) {
+    for (let i = 0; i < 2; i++) {
+      const el = document.createElement('div');
+      el.className = 'cursor-trail';
+      const size  = 2 + Math.random() * 3.5;
+      const ox    = (Math.random() - 0.5) * 8;
+      const oy    = (Math.random() - 0.5) * 8;
+      const color = TRAIL_COLORS[Math.floor(Math.random() * TRAIL_COLORS.length)];
+      el.style.cssText = `
+        left:${x + ox}px; top:${y + oy}px;
+        width:${size}px; height:${size}px;
+        background:${color};
+        box-shadow:0 0 ${size+2}px ${color};
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 520);
+    }
+  }
+
+  /* 클릭 버스트 */
+  function spawnBurst(x, y) {
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement('div');
+      el.className = 'click-particle';
+      const size  = 2 + Math.random() * 5;
+      const angle = (i / 22) * Math.PI * 2 + Math.random() * 0.25;
+      const dist  = (i % 2 === 0 ? 16 : 32) + Math.random() * 20;
+      const color = BURST_COLORS[Math.floor(Math.random() * BURST_COLORS.length)];
+      el.style.cssText = `
+        left:${x}px;top:${y}px;
+        width:${size}px;height:${size}px;
+        background:${color};
+        box-shadow:0 0 ${size+2}px ${color};
+        --sx:${Math.cos(angle)*dist}px;
+        --sy:${Math.sin(angle)*dist}px;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 680);
+    }
+    const pinks = ['#FF69B4','#FF85C2','#FFB6D9','#fff','#FFD6EC'];
+    for (let i = 0; i < 8; i++) {
+      const el = document.createElement('div');
+      el.className = 'click-heart';
+      const angle = (i / 8) * Math.PI * 2 + Math.random() * 0.5;
+      const dist  = 24 + Math.random() * 34;
+      const fs    = 9 + Math.random() * 8;
+      const color = pinks[Math.floor(Math.random()*pinks.length)];
+      el.textContent = '♥';
+      el.style.cssText = `
+        left:${x}px;top:${y}px;
+        color:${color};
+        font-size:${fs}px;
+        --sx:${Math.cos(angle)*dist}px;
+        --sy:${Math.sin(angle)*dist}px;
+        --r0:${(Math.random()-0.5)*30}deg;
+        --r1:${(Math.random()-0.5)*160}deg;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 750);
+    }
+  }
+
+  /* 이동 트레일 파티클 */
+  let lastX = -999, lastY = -999;
+  function spawnTrail(x, y) {
+    for (let i = 0; i < 2; i++) {
+      const el = document.createElement('div');
+      el.className = 'cursor-trail';
+      const size  = 2 + Math.random() * 3.5;
+      const ox    = (Math.random() - 0.5) * 8;
+      const oy    = (Math.random() - 0.5) * 8;
+      const color = TRAIL_COLORS[Math.floor(Math.random() * TRAIL_COLORS.length)];
+      el.style.cssText = `
+        left:${x + ox}px; top:${y + oy}px;
+        width:${size}px; height:${size}px;
+        background:${color};
+        box-shadow:0 0 ${size+2}px ${color};
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 520);
+    }
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    const x = e.clientX, y = e.clientY;
+    curX = x; curY = y;
+    isActive = true;
+    wrap.style.left = x + 'px';
+    wrap.style.top  = y + 'px';
+    wrap.classList.add('active');
+    const dx = x - lastX, dy = y - lastY;
+    if (dx*dx + dy*dy > 80) {
+      spawnTrail(x, y);
+      lastX = x; lastY = y;
+    }
+    startIdleSparkles();
+  });
+
+  document.addEventListener('mouseleave', () => {
+    wrap.classList.remove('active');
+    isActive = false;
+    stopIdleSparkles();
+  });
+
+  document.addEventListener('mousedown', (e) => {
+    spawnBurst(e.clientX, e.clientY);
+    wrap.classList.remove('burst');
+    void wrap.offsetWidth;
+    wrap.classList.add('burst');
+  });
+
+  document.getElementById('cursor-note-svg').addEventListener('animationend', (ev) => {
+    if (ev.animationName === 'note-squish') wrap.classList.remove('burst');
+  });
+})();
+</script>
+
 </body>
 </html>

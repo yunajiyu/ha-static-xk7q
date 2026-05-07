@@ -50,7 +50,7 @@
   font-weight: normal; font-display: swap;
 }
 :root{
-  --bg:#F8F5FC;
+  --bg:#EEF0F3;
   --surface:#FFFFFF;
   --border:#ECEEF1;
   --border-strong:#E0E3E8;
@@ -74,49 +74,7 @@
   --sh:#7B5B3A;     --sh-bg:#F0E8DF;     --sh-border:#D9C7B0;
   --si:#4A4A4A;     --si-bg:#E8E8E8;     --si-border:#C7C7C7;
 }
-body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);font-size:16px;min-height:100vh;position:relative}
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  pointer-events:none;z-index:0;
-  filter:blur(22px);
-  animation:bg-aurora-a 18s ease-in-out infinite alternate,
-             bg-aurora-b 24s ease-in-out infinite alternate-reverse;
-}
-@keyframes bg-aurora-a{
-  0%{
-    background:
-      radial-gradient(ellipse 90% 50% at 10% 15%, rgba(255,160,195,0.32) 0%, transparent 65%),
-      radial-gradient(ellipse 70% 45% at 88% 8%,  rgba(255,205,140,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 80% 48% at 55% 4%,  rgba(255,235,130,0.25) 0%, transparent 65%),
-      radial-gradient(ellipse 65% 40% at 25% 5%,  rgba(155,230,175,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 75% 45% at 78% 22%, rgba(145,205,255,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 60% 38% at 48% 18%, rgba(195,160,255,0.25) 0%, transparent 65%);
-  }
-  50%{
-    background:
-      radial-gradient(ellipse 85% 52% at 30% 25%, rgba(255,195,155,0.30) 0%, transparent 65%),
-      radial-gradient(ellipse 72% 42% at 65%  5%, rgba(160,240,195,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 78% 46% at 15% 10%, rgba(150,195,255,0.30) 0%, transparent 65%),
-      radial-gradient(ellipse 68% 44% at 82% 18%, rgba(215,160,255,0.26) 0%, transparent 65%),
-      radial-gradient(ellipse 80% 50% at 45% 22%, rgba(255,215,145,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 58% 36% at 90% 30%, rgba(255,165,190,0.30) 0%, transparent 65%);
-  }
-  100%{
-    background:
-      radial-gradient(ellipse 88% 48% at 70% 12%, rgba(200,235,175,0.30) 0%, transparent 65%),
-      radial-gradient(ellipse 66% 44% at 18% 20%, rgba(255,175,205,0.32) 0%, transparent 65%),
-      radial-gradient(ellipse 76% 50% at 85% 25%, rgba(255,225,145,0.27) 0%, transparent 65%),
-      radial-gradient(ellipse 62% 40% at 42%  8%, rgba(175,195,255,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 82% 46% at 60% 20%, rgba(210,165,255,0.26) 0%, transparent 65%),
-      radial-gradient(ellipse 56% 35% at 12% 30%, rgba(155,235,210,0.28) 0%, transparent 65%);
-  }
-}
-@keyframes bg-aurora-b{
-  0%  {opacity:0.75}
-  50% {opacity:1}
-  100%{opacity:0.8}
-}
+body{font-family:'SUITE',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);font-size:16px;min-height:100vh}
 
 /* ══════════════════════════════════════
    셸 + 사이드바 — 데스크탑 기본값
@@ -125,7 +83,6 @@ body::before{
 .shell{
   max-width:1280px;margin:1.5rem auto;padding:0 1.5rem;
   display:flex;align-items:flex-start;
-  position:relative;z-index:1;
 }
 .shell-card{
   background:var(--surface);
